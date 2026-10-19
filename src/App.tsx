@@ -102,7 +102,7 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
       {/* Header */}
       <header className="sticky top-0 z-40 relative border-b border-border bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-          <button onClick={() => go("home")} className="flex shrink-0 items-center gap-2 font-display text-base font-bold tracking-tight sm:text-xl" aria-label="GotYoBack home">
+          <button onClick={() => go("home")} className="flex shrink-0 items-center gap-2 font-display text-base font-black tracking-tight sm:text-xl" aria-label="GotYoBack home">
             <span>GotYo<span className="text-primary">Back</span></span>
           </button>
 
