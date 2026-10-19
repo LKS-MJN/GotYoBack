@@ -130,7 +130,7 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
             onClick={() => setMobileMenuOpen((o) => !o)}
             aria-label="Toggle navigation menu"
             aria-expanded={mobileMenuOpen}
-            className="grid size-11 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
+            className="grid size-11 place-items-center rounded-none text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
           >
             {mobileMenuOpen ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
           </button>
@@ -146,7 +146,7 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
                       <button
                         onClick={() => { go(item.id); setMobileMenuOpen(false) }}
                         aria-current={active ? "page" : undefined}
-                        className={`flex w-full items-center rounded-lg px-3 py-2.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${active ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+                        className={`flex w-full items-center rounded-none px-3 py-2.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${active ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
                       >
                         {item.label}
                       </button>
@@ -165,7 +165,7 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
               {!cloudEnabled ? <CloudOff className="size-3.5" aria-hidden /> : !ready ? <Cloud className="size-3.5 animate-pulse" aria-hidden /> : <Cloud className="size-3.5 text-primary" aria-hidden />}
               {!cloudEnabled ? "Local" : !ready ? "Syncing" : "Synced"}
             </span>
-            <span className="rounded-lg bg-accent px-2.5 py-1 font-display text-sm font-semibold text-accent-foreground">{api.progress.xp} XP</span>
+            <span className="rounded-none bg-accent px-2.5 py-1 font-display text-sm font-semibold text-accent-foreground">{api.progress.xp} XP</span>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="Reset progress" className="size-11"><RotateCcw aria-hidden /></Button>

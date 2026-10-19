@@ -44,7 +44,7 @@ export default function Tour({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 16 }}
-          className="surface-card pointer-events-auto relative w-full max-w-sm space-y-4 p-5 glow-primary"
+          className="surface-card pointer-events-auto relative w-full max-w-sm space-y-4 p-5"
           role="dialog"
           aria-label={`Tour step ${i + 1} of ${STEPS.length}`}
         >
