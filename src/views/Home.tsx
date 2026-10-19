@@ -77,7 +77,7 @@ export default function Home({
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
             <Route className="size-3.5" aria-hidden /> Interactive Robotics & IoT Lab
           </span>
-          <h1 className="max-w-2xl font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl">
+          <h1 className="max-w-2xl font-display text-[clamp(2rem,5vw,3rem)] font-bold leading-[1.05] tracking-tight">
             What should I do next?
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground">

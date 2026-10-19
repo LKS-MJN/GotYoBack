@@ -11,7 +11,7 @@
 
   --card: oklch(0.2 0.02 255);
   --card-foreground: oklch(0.93 0.008 250);
-  --card-border: oklch(0.29 0.024 255);
+  --card-border: oklch(0.32 0.024 255);
 
   --popover: oklch(0.22 0.022 255);
   --popover-foreground: oklch(0.93 0.008 250);
@@ -23,15 +23,15 @@
   --secondary-foreground: oklch(0.93 0.008 250);
 
   --muted: oklch(0.25 0.018 255);
-  --muted-foreground: oklch(0.67 0.016 250);
+  --muted-foreground: oklch(0.72 0.016 250);
 
-  --accent: oklch(0.28 0.045 195);
+  --accent: oklch(0.3 0.055 195);
   --accent-foreground: oklch(0.97 0.005 195);
 
   --destructive: oklch(0.66 0.18 25);
   --destructive-foreground: oklch(0.99 0.005 25);
 
-  --border: oklch(0.29 0.024 255);
+  --border: oklch(0.32 0.024 255);
   --input: oklch(0.24 0.02 255);
   --ring: oklch(0.74 0.12 195);
 
@@ -76,7 +76,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 

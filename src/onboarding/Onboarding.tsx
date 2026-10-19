@@ -114,7 +114,7 @@ export default function Onboarding({
                 <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                   <Sparkles className="size-3.5" aria-hidden /> No hardware required
                 </span>
-                <h1 className="font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+                <h1 className="font-display text-[clamp(2rem,6vw,3rem)] font-bold leading-tight tracking-tight">
                   Your Journey into Robotics Starts Here
                 </h1>
                 <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
