@@ -1,4 +1,5 @@
 import { Play, BookOpen, Bot, Wifi, Wrench, CircuitBoard, ArrowRight } from "lucide-react"
+import { Reveal, SectionRule } from "@/components/Reveal"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { buildRoadmap, type Preferences, INTEREST_OPTIONS } from "@/lib/preferences"
@@ -56,7 +57,7 @@ export default function Home({
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <section className="space-y-4">
+      <Reveal className="space-y-4">
         <div className="space-y-2">
           <h1 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
             {resume ? `Continue: ${resume.title}` : "What should I do next?"}
@@ -77,7 +78,9 @@ export default function Home({
             <Bot aria-hidden className="size-4" /> Open Robotics Lab
           </Button>
         </div>
-      </section>
+      </Reveal>
+
+      <SectionRule />
 
       {/* Next step */}
       {nextStage && (
@@ -101,7 +104,7 @@ export default function Home({
       )}
 
       {/* Quick access */}
-      <section>
+      <Reveal delay={80}>
         <h2 className="mb-3 font-display text-lg font-semibold">Quick access</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {QUICK.map((q) => (
@@ -117,10 +120,10 @@ export default function Home({
             </button>
           ))}
         </div>
-      </section>
+      </Reveal>
 
       {/* Recommended + Progress */}
-      <section className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+      <Reveal delay={140} className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         {recommended.length > 0 && (
           <div>
             <h2 className="mb-3 font-display text-lg font-semibold">Recommended for you</h2>
@@ -197,11 +200,11 @@ export default function Home({
             </button>
           )}
         </div>
-      </section>
+      </Reveal>
 
       {/* Explore */}
       {paths.filter((p) => !prefs.interests.some((i) => INTEREST_OPTIONS.find((o) => o.id === i)?.pathId === p.id)).length > 0 && (
-        <section>
+        <Reveal delay={200}>
           <h2 className="mb-3 font-display text-lg font-semibold">Explore other topics</h2>
           <div className="grid gap-3 sm:grid-cols-3">
             {paths
@@ -219,7 +222,7 @@ export default function Home({
                 </button>
               ))}
           </div>
-        </section>
+        </Reveal>
       )}
     </div>
   )

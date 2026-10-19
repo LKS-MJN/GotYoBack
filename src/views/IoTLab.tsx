@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import { Play, Pause, RotateCcw, Lightbulb, Fan, Siren, Droplets, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { createIoT, tickIoT, resetIoT, type IoTSim } from "@/lib/sim/iot"
+import { createIoT, tickIoT, resetIoT, setSensorValue, type IoTSim } from "@/lib/sim/iot"
 import { cn } from "@/lib/utils"
 import type { ProgressApi } from "@/hooks/useProgress"
 import { useState } from "react"
@@ -31,9 +31,9 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
 
   useEffect(() => {
     if (!running) return
-    const t = setTimeout(() => setSim((s) => tickIoT(s)), 700)
-    return () => clearTimeout(t)
-  }, [running, sim])
+    const t = setInterval(() => setSim((s) => tickIoT(s)), 700)
+    return () => clearInterval(t)
+  }, [running])
 
   // Count first completed viewing as an experiment.
   useEffect(() => {
@@ -44,10 +44,7 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
   }, [sim.tick, recordExperiment])
 
   function manualSet(sensorId: string, value: number) {
-    setSim((s) => ({
-      ...s,
-      sensors: s.sensors.map((x) => (x.id === sensorId ? { ...x, value } : x)),
-    }))
+    setSim((s) => setSensorValue(s, sensorId, value))
   }
 
   function toggleRule(ruleId: string) {
@@ -68,7 +65,12 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
             A simulated smart room. Change conditions and watch automation rules fire.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <span className="live-dot" aria-hidden />
+            {running ? "Live" : "Paused"}
+          </span>
+          <div className="flex items-center gap-2">
           <div className="flex rounded-none border border-border bg-muted/40 p-0.5">
             <button
               onClick={() => setViewMode("text")}
@@ -91,6 +93,7 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
           <Button variant="outline" onClick={() => { setSim(resetIoT()); counted.current = false }} aria-label="Reset">
             <RotateCcw aria-hidden /> Reset
           </Button>
+          </div>
         </div>
       </header>
 

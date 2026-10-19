@@ -1,4 +1,5 @@
 import { motion } from "motion/react"
+import { CountUp } from "@/components/CountUp"
 import { BookOpen, Trophy, Target, Sparkles, Check, RotateCcw, Route } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Progress as ProgressBar } from "@/components/ui/progress"
@@ -71,7 +72,7 @@ export default function ProgressPage({
       <section className="surface-card p-6">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-xl font-semibold">Overall completion</h2>
-          <span className="font-display text-2xl font-bold text-primary">{percent}%</span>
+          <span className="font-display text-2xl font-bold text-primary"><CountUp value={percent} />%</span>
         </div>
         <div className="mt-3"><ProgressBar value={percent} className="h-2" aria-label="Overall progress" /></div>
         <dl className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">

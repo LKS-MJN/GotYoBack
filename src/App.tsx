@@ -165,7 +165,7 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
               {!cloudEnabled ? <CloudOff className="size-3.5" aria-hidden /> : !ready ? <Cloud className="size-3.5 animate-pulse" aria-hidden /> : <Cloud className="size-3.5 text-primary" aria-hidden />}
               {!cloudEnabled ? "Local" : !ready ? "Syncing" : "Synced"}
             </span>
-            <span className="rounded-none bg-accent px-2.5 py-1 font-display text-sm font-semibold text-accent-foreground">{api.progress.xp} XP</span>
+            <span className="rounded-none bg-accent px-2.5 py-1 font-display text-sm font-semibold text-accent-foreground"><CountUp value={api.progress.xp} /> XP</span>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="Reset progress" className="size-11"><RotateCcw aria-hidden /></Button>
