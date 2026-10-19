@@ -1,6 +1,6 @@
 # GotYoBack
 
-An interactive learning platform for **robotics, electronics, and IoT**. Learn concepts, experiment in virtual labs, and build projects — all without physical hardware.
+An interactive learning platform for **robotics, electronics, and IoT**. Learn concepts, experiment in virtual labs, and build projects : all without physical hardware.
 
 ## Live Demo
 
@@ -58,11 +58,11 @@ npm run preview
 src/
 +-- App.tsx              # App shell, routing, nav
 +-- components/          # Reusable UI components
-¦   +-- ui/              # shadcn/ui primitives
+Â¦   +-- ui/              # shadcn/ui primitives
 +-- data/                # Curriculum, hardware, projects
 +-- hooks/               # useProgress, useAuth
 +-- lib/                 # Utilities, sim engines, preferences
-¦   +-- sim/             # Robot and IoT simulation engines
+Â¦   +-- sim/             # Robot and IoT simulation engines
 +-- onboarding/          # Onboarding flow
 +-- providers/           # AuthProvider
 +-- views/               # Page views
