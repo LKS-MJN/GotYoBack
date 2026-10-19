@@ -16,3 +16,8 @@ Thumbs.db
 *.png
 .reticle-setup-crash.log
 
+
+# Python bytecode
+__pycache__/
+*.pyc
+

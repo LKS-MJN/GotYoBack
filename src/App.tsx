@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { Bot, ShieldCheck, Cloud, CloudOff, RotateCcw, MapPin } from "lucide-react"
+import { Bot, ShieldCheck, Cloud, CloudOff, RotateCcw, MapPin, Menu, X } from "lucide-react"
 import { useProgress } from "@/hooks/useProgress"
 import { AuthProvider, useAuth } from "@/providers/AuthProvider"
 import { cloudEnabled } from "@/lib/supabase"
@@ -39,6 +39,8 @@ function Shell() {
   const api = useProgress()
   const { ready, signedIn, isGuest } = useAuth()
 
+const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   // First-time users get onboarding. Returning users land on the dashboard.
   useEffect(() => {
     if (!prefs.onboarded) setShowOnboarding(true)
@@ -55,6 +57,7 @@ function Shell() {
   const go = useCallback((v: View) => {
     setView(v)
     if (v !== "lesson") setActiveLesson(null)
+    setMobileMenuOpen(false)
     window.scrollTo({ top: 0 })
   }, [])
 
@@ -94,7 +97,7 @@ function Shell() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-border bg-background/70 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 relative border-b border-border bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
           <button onClick={() => go("home")} className="flex shrink-0 items-center gap-2.5 font-display text-lg font-bold tracking-tight" aria-label="RoboLab home">
             <span className="glow-primary grid size-8 place-items-center rounded-lg bg-primary">
@@ -103,8 +106,8 @@ function Shell() {
             <span className="hidden sm:inline">Robo<span className="text-primary">Lab</span></span>
           </button>
 
-          <nav aria-label="Main" className="min-w-0">
-            <ul className="flex items-center gap-0.5 overflow-x-auto text-sm">
+          <nav aria-label="Main" className="hidden min-w-0 md:block">
+            <ul className="flex items-center gap-0.5 text-sm">
               {NAV.map((item) => {
                 const active = view === item.id || (view === "lesson" && item.id === "learn")
                 return (
@@ -112,7 +115,7 @@ function Shell() {
                     <button
                       onClick={() => go(item.id)}
                       aria-current={active ? "page" : undefined}
-                      className={`relative rounded-lg px-3 py-1.5 whitespace-nowrap transition-colors ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                      className={`relative rounded-lg px-3 py-1.5 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
                     >
                       {active && (
                         <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-lg bg-accent" transition={{ type: "spring", stiffness: 400, damping: 32 }} />
@@ -125,6 +128,38 @@ function Shell() {
             </ul>
           </nav>
 
+          {/* Mobile menu trigger */}
+          <button
+            onClick={() => setMobileMenuOpen((o) => !o)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileMenuOpen}
+            className="grid size-11 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
+          >
+            {mobileMenuOpen ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+          </button>
+
+          {/* Mobile menu panel */}
+          {mobileMenuOpen && (
+            <div className="absolute inset-x-0 top-16 border-b border-border bg-background/95 backdrop-blur-xl md:hidden">
+              <ul className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3">
+                {NAV.map((item) => {
+                  const active = view === item.id || (view === "lesson" && item.id === "learn")
+                  return (
+                    <li key={item.id}>
+                      <button
+                        onClick={() => { go(item.id); setMobileMenuOpen(false) }}
+                        aria-current={active ? "page" : undefined}
+                        className={`flex w-full items-center rounded-lg px-3 py-2.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${active ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+                      >
+                        {item.label}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          )}
+
           <div className="flex shrink-0 items-center gap-2">
             <span
               className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex"
@@ -136,7 +171,7 @@ function Shell() {
             <span className="rounded-lg bg-accent px-2.5 py-1 font-display text-sm font-semibold text-accent-foreground">{api.progress.xp} XP</span>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="icon-sm" aria-label="Reset progress"><RotateCcw aria-hidden /></Button>
+                <Button variant="ghost" size="icon" aria-label="Reset progress" className="size-11"><RotateCcw aria-hidden /></Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
