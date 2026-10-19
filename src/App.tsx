@@ -42,8 +42,11 @@ function Shell() {
 const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // First-time users get onboarding. Returning users land on the dashboard.
+  // Also allow ?onboard=1 (or ?welcome=1) to force the onboarding flow for demos.
   useEffect(() => {
-    if (!prefs.onboarded) setShowOnboarding(true)
+    const params = new URLSearchParams(window.location.search)
+    const forceOnboard = params.has("onboard") || params.has("welcome")
+    if (forceOnboard || !prefs.onboarded) setShowOnboarding(true)
   }, [prefs.onboarded])
 
   const updatePrefs = useCallback((patch: Partial<Preferences>) => {
@@ -227,6 +230,12 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
             className="mt-1 text-xs text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             Back to top
+          </button>
+          <button
+            onClick={() => { updatePrefs({ onboarded: false, tourDone: false }); setShowOnboarding(true) }}
+            className="text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            Restart onboarding
           </button>
         </div>
       </footer>
