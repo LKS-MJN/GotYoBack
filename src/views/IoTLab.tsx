@@ -160,19 +160,19 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
             <h3 className="font-display font-semibold">Device states</h3>
             <span className="text-xs text-muted-foreground">{activeRules} rule(s) matching now</span>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             {sim.devices.map((d) => {
               const Icon = ICONS[d.icon]
               return (
                 <div
                   key={d.id}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg border p-3 transition-colors",
+                    "flex items-center gap-3 rounded-lg border p-4 transition-colors",
                     d.on ? "border-sim-warn/50 bg-sim-warn/10" : "border-border bg-background/40",
                   )}
                 >
-                  <span className={cn("grid size-9 shrink-0 place-items-center rounded-lg", d.on ? "bg-sim-warn/20 text-sim-warn" : "bg-muted text-muted-foreground")}>
-                    <Icon className={cn("size-4.5", d.on && "animate-pulse")} aria-hidden />
+                  <span className={cn("grid size-10 shrink-0 place-items-center rounded-lg", d.on ? "bg-sim-warn/20 text-sim-warn" : "bg-muted text-muted-foreground")}>
+                    <Icon className={cn("size-5", d.on && "animate-pulse")} aria-hidden />
                   </span>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium">{d.name}</p>
@@ -189,21 +189,21 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
         {/* Automation rules */}
         <div className="surface-card p-5">
           <h3 className="mb-4 font-display font-semibold">Automation rules</h3>
-          <ul className="space-y-2.5">
+          <ul className="space-y-3">
             {sim.rules.map((r) => {
               const sensor = sim.sensors.find((s) => s.id === r.sensorId)
               const device = sim.devices.find((d) => d.id === r.deviceId)
               const sv = sensor?.value ?? 0
               const matching = r.op === ">" ? sv > r.threshold : sv < r.threshold
               return (
-                <li key={r.id} className="flex items-center justify-between gap-3 rounded-lg border border-border bg-background/40 p-3">
+                <li key={r.id} className="flex items-center justify-between gap-3 rounded-lg border border-border bg-background/40 p-4">
                   <div className="min-w-0 font-mono text-xs leading-relaxed">
                     <span className="text-muted-foreground">IF </span>
                     <span className="text-foreground">{sensor?.name}</span>
                     <span className="text-primary"> {r.op} {r.threshold}</span>
                     <span className="text-muted-foreground"> THEN </span>
                     <span className="text-foreground">{device?.name} {r.turnOn ? "ON" : "OFF"}</span>
-                    <div className={cn("mt-1 font-sans text-[11px]", matching ? "text-sim-ok" : "text-muted-foreground")}>
+                    <div className={cn("mt-1.5 font-sans text-[11px]", matching ? "text-sim-ok" : "text-muted-foreground")}>
                       {matching ? "Condition true now" : "Condition false"}
                     </div>
                   </div>
@@ -226,24 +226,24 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
         </div>
       </div>
 
-      {/* Data flow strip (sensor-to-action) */}
+      {/* Sensor to action */}
       <div className="surface-card p-5">
-        <h3 className="mb-3 font-display font-semibold">Sensor to action</h3>
-        <div className="flex flex-wrap items-center gap-2 text-xs">
+        <h3 className="mb-4 font-display font-semibold">Sensor to action</h3>
+        <div className="flex flex-wrap items-center gap-3">
           {[
-            { l: "Physical", v: `${sim.sensors[0].value} °C` },
-            { l: "Sensor", v: "DHT11" },
-            { l: "Signal", v: "digital" },
-            { l: "Controller", v: "ESP32" },
-            { l: "Logic", v: activeRules > 0 ? "rule matched" : "no match" },
-            { l: "Output", v: sim.devices.some((d) => d.on) ? "actuator ON" : "idle" },
+            { l: "Physical", v: `${sim.sensors[0].value} °C`, c: "text-sim-warn" },
+            { l: "Sensor", v: "DHT11", c: "text-primary" },
+            { l: "Signal", v: "analog", c: "text-muted-foreground" },
+            { l: "Controller", v: "ESP32", c: "text-primary" },
+            { l: "Logic", v: activeRules > 0 ? "rule matched" : "no match", c: activeRules > 0 ? "text-sim-ok" : "text-muted-foreground" },
+            { l: "Output", v: sim.devices.some((d) => d.on) ? "actuator ON" : "idle", c: sim.devices.some((d) => d.on) ? "text-sim-warn" : "text-muted-foreground" },
           ].map((st, i, arr) => (
-            <span key={st.l} className="flex items-center gap-2">
-              <span className="rounded-lg border border-border bg-background/50 px-3 py-2">
-                <span className="block text-muted-foreground">{st.l}</span>
-                <span className="block font-mono text-foreground">{st.v}</span>
+            <span key={st.l} className="flex items-center gap-3">
+              <span className="flex min-w-[72px] flex-col items-center rounded-lg border border-border bg-background/50 px-3 py-2.5 text-center">
+                <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">{st.l}</span>
+                <span className={`mt-1 font-mono text-sm font-medium ${st.c}`}>{st.v}</span>
               </span>
-              {i < arr.length - 1 && <span className="text-primary" aria-hidden>›</span>}
+              {i < arr.length - 1 && <span className="text-lg text-primary/60" aria-hidden>→</span>}
             </span>
           ))}
         </div>
@@ -260,7 +260,7 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
         {sim.log.length === 0 ? (
           <p className="text-sm text-muted-foreground">No events yet. Run the simulation or nudge a sensor value.</p>
         ) : (
-          <ul className="max-h-52 space-y-1.5 overflow-y-auto font-mono text-xs">
+          <ul className="max-h-56 space-y-2 overflow-y-auto font-mono text-xs">
             {sim.log
               .slice()
               .reverse()
