@@ -63,8 +63,8 @@ const DELTA: Record<Heading, { dx: number; dy: number }> = {
 }
 
 export function defaultMaze(): SimConfig {
-  const width = 10
-  const height = 7
+  const width = 12
+  const height = 8
   const walls = new Set<string>()
   // Outer border walls.
   for (let x = 0; x < width; x++) {
@@ -82,10 +82,12 @@ export function defaultMaze(): SimConfig {
     [4, 4],
     [7, 2],
     [7, 3],
+    [7, 5],
+    [9, 4],
     [2, 5],
     [3, 5],
   ].forEach(([x, y]) => walls.add(`${x},${y}`))
-  return { width, height, walls, goal: { x: 8, y: 5 }, maxRange: 60, cellSize: 10 }
+  return { width, height, walls, goal: { x: 10, y: 6 }, maxRange: 60, cellSize: 10 }
 }
 
 export const DEFAULT_RULES: Rule[] = [

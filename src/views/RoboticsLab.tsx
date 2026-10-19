@@ -113,9 +113,9 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
 
       <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
         {/* ---------- Maze ---------- */}
-        <div className="surface-card mx-auto max-w-2xl p-4 sm:p-5">
+        <div className="surface-card mx-auto max-w-3xl p-4 sm:p-5">
           <div
-            className="lab-grid grid gap-1 transition-transform duration-500"
+            className="lab-grid grid gap-0.5 transition-transform duration-500"
             style={{
               gridTemplateColumns: `repeat(${world.cfg.width}, minmax(0,1fr))`,
               aspectRatio: `${world.cfg.width} / ${world.cfg.height}`,
