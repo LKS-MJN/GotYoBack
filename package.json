@@ -1,0 +1,40 @@
+{
+  "name": "velocity",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "a11y:scan": "node .opencode/skills/accessibility-audit/scripts/a11y-scan.mjs",
+    "a11y:doctor": "node .opencode/skills/accessibility-audit/scripts/doctor.mjs",
+    "a11y:act": "node .opencode/skills/accessibility-audit/benchmark/act-runner.mjs",
+    "a11y:compare": "node .opencode/skills/accessibility-audit/benchmark/compare-runner.mjs"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "1.18.33",
+    "@supabase/supabase-js": "^2.118.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.26",
+    "lucide-react": "^1.49.0",
+    "motion": "^14.3.0",
+    "puppeteer": "^24.43.1",
+    "radix-ui": "^1.8.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "sharp": "^0.35.4",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1"
+  }
+}

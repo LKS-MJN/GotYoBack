@@ -1,0 +1,64 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": [
+    "@dietrichgebert/ponytail",
+    "@sulesky/opencode-plugger"
+  ],
+  "mcp": {
+    "servers": {
+      "reticle": {
+        "type": "local",
+        "command": ["npx", "-y", "@reticlehq/server", "mcp"]
+      },
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp"
+      },
+      "sequential_thinking": {
+        "type": "local",
+        "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"]
+      },
+      "playwright": {
+        "type": "local",
+        "command": ["npx", "-y", "@playwright/mcp"]
+      },
+      "github": {
+        "type": "remote",
+        "url": "https://api.github.com/mcp",
+        "oauth": {}
+      },
+      "sentry": {
+        "type": "remote",
+        "url": "https://mcp.sentry.dev/mcp",
+        "oauth": {}
+      },
+      "linear": {
+        "type": "remote",
+        "url": "https://api.linear.app/mcp",
+        "oauth": {}
+      },
+      "vercel": {
+        "type": "remote",
+        "url": "https://api.vercel.com/mcp",
+        "oauth": {}
+      },
+      "figma": {
+        "type": "remote",
+        "url": "https://api.figma.com/mcp",
+        "oauth": {}
+      },
+      "opencode-mcp": {
+        "type": "local",
+        "command": ["npx", "-y", "opencode-mcp"]
+      },
+      "mcp-skills": {
+        "type": "local",
+        "command": ["npx", "-y", "@koderspa/mcp-skills@latest"]
+      }
+    }
+  },
+  "permissions": [
+    { "action": "skill", "resource": "*", "effect": "allow" }
+  ],
+  "instructions": ["DESIGN-RULES.md"]
+}
