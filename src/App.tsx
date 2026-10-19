@@ -103,7 +103,7 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
             <span className="glow-primary grid size-8 place-items-center rounded-lg bg-primary">
               <Bot className="size-4.5 text-primary-foreground" aria-hidden />
             </span>
-            <span className="hidden sm:inline">Robo<span className="text-primary">Lab</span></span>
+            <span className="hidden sm:inline">GotYo<span className="text-primary">Back</span></span>
           </button>
 
           <nav aria-label="Main" className="hidden min-w-0 md:block">
