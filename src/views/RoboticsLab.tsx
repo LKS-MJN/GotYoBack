@@ -24,6 +24,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
   const [editingRules, setEditingRules] = useState<Rule[]>(DEFAULT_RULES)
   const [editThreshold, setEditThreshold] = useState("20")
   const [challenge, setChallenge] = useState(true)
+  const [view3D, setView3D] = useState(false)
   const counted = useRef(false)
 
   const distance = useMemo(() => senseDistance(world), [world])
@@ -113,10 +114,12 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
         {/* ---------- Maze ---------- */}
         <div className="surface-card p-4 sm:p-5">
           <div
-            className="lab-grid grid gap-1"
+            className="lab-grid grid gap-1 transition-transform duration-500"
             style={{
               gridTemplateColumns: `repeat(${world.cfg.width}, minmax(0,1fr))`,
               aspectRatio: `${world.cfg.width} / ${world.cfg.height}`,
+              transform: view3D ? "perspective(900px) rotateX(40deg) rotateZ(-16deg)" : "none",
+              transformOrigin: "center center",
             }}
             role="grid"
             aria-label="Robot maze"
@@ -176,6 +179,13 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
               </Button>
               <Button variant="ghost" onClick={resetAll} aria-label="Reset">
                 <RotateCcw aria-hidden /> Reset
+              </Button>
+              <Button
+                variant={view3D ? "default" : "outline"}
+                onClick={() => setView3D((v) => !v)}
+                aria-pressed={view3D}
+              >
+                {view3D ? "2D view" : "3D view"}
               </Button>
             </div>
             <div className="mt-4 flex items-center justify-between text-sm">

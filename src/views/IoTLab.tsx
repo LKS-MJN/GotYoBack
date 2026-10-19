@@ -26,6 +26,7 @@ function Spark({ data, max }: { data: number[]; max: number }) {
 export default function IoTLab({ recordExperiment }: ProgressApi) {
   const [sim, setSim] = useState<IoTSim>(() => createIoT())
   const [running, setRunning] = useState(false)
+  const [viewMode, setViewMode] = useState<"text" | "visual">("text")
   const counted = useRef(false)
 
   useEffect(() => {
@@ -68,6 +69,22 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <div className="flex rounded-lg border border-border bg-muted/40 p-0.5">
+            <button
+              onClick={() => setViewMode("text")}
+              className={`rounded-md px-2.5 py-1 text-xs transition-colors ${viewMode === "text" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              aria-pressed={viewMode === "text"}
+            >
+              Text
+            </button>
+            <button
+              onClick={() => setViewMode("visual")}
+              className={`rounded-md px-2.5 py-1 text-xs transition-colors ${viewMode === "visual" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              aria-pressed={viewMode === "visual"}
+            >
+              Visual
+            </button>
+          </div>
           <Button onClick={() => setRunning((r) => !r)} className="min-w-24">
             {running ? <><Pause aria-hidden /> Pause</> : <><Play aria-hidden /> Run</>}
           </Button>
@@ -77,33 +94,63 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
         </div>
       </header>
 
-      <p className="rounded-lg border border-primary/25 bg-primary/10 px-4 py-2 text-xs text-muted-foreground">
-        Simulation: sensor values and devices are simulated in your browser. No real hardware or cloud is connected.
+      <p className="rounded-lg border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs text-muted-foreground">
+        Simulated in-browser. No real hardware or cloud.
       </p>
 
       {/* Sensor cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {sim.sensors.map((s) => (
-          <div key={s.id} className="surface-card p-4">
-            <div className="flex items-baseline justify-between">
-              <p className="text-sm text-muted-foreground">{s.name}</p>
-              <span className="font-display text-lg font-bold text-primary">
-                {s.value}
-                <span className="ml-0.5 text-xs font-normal text-muted-foreground">{s.unit}</span>
-              </span>
+        {sim.sensors.map((s) => {
+          const pct = s.max === s.min ? 0 : (s.value - s.min) / (s.max - s.min)
+          const r = 30
+          const circ = 2 * Math.PI * r
+          const offset = circ * (1 - pct)
+          return (
+            <div key={s.id} className="surface-card p-4">
+              <div className="flex items-baseline justify-between">
+                <p className="text-sm text-muted-foreground">{s.name}</p>
+                <span className="font-display text-lg font-bold text-primary">
+                  {s.value}
+                  <span className="ml-0.5 text-xs font-normal text-muted-foreground">{s.unit}</span>
+                </span>
+              </div>
+              {viewMode === "visual" ? (
+                <div className="my-2 flex items-center justify-center">
+                  <svg viewBox="0 0 80 80" className="h-24 w-24" aria-hidden>
+                    <circle cx="40" cy="40" r={r} fill="none" stroke="var(--muted)" strokeWidth="6" />
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r={r}
+                      fill="none"
+                      stroke="var(--sim-target)"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeDasharray={circ}
+                      strokeDashoffset={offset}
+                      transform="rotate(-90 40 40)"
+                      style={{ transition: "stroke-dashoffset 0.3s ease" }}
+                    />
+                    <text x="40" y="44" textAnchor="middle" className="fill-foreground" style={{ fontSize: 12, fontWeight: 600 }}>
+                      {s.value}
+                    </text>
+                  </svg>
+                </div>
+              ) : (
+                <Spark data={sim.series[s.id] ?? []} max={s.max} />
+              )}
+              <input
+                type="range"
+                min={s.min}
+                max={s.max}
+                value={s.value}
+                onChange={(e) => manualSet(s.id, Number(e.target.value))}
+                className="mt-1 w-full accent-[var(--sim-target)]"
+                aria-label={`${s.name} value`}
+              />
             </div>
-            <Spark data={sim.series[s.id] ?? []} max={s.max} />
-            <input
-              type="range"
-              min={s.min}
-              max={s.max}
-              value={s.value}
-              onChange={(e) => manualSet(s.id, Number(e.target.value))}
-              className="mt-1 w-full accent-[var(--sim-target)]"
-              aria-label={`${s.name} value`}
-            />
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[1fr_1fr]">
