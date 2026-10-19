@@ -22,7 +22,7 @@ export const initialProgress: ProgressState = {
   updatedAt: 0,
 }
 
-const KEY = "robolab-progress-v1"
+const KEY = "gotyoback-progress-v1"
 
 export function loadLocal(): ProgressState {
   try {

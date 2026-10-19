@@ -297,7 +297,7 @@ export default function Onboarding({
                   <Sparkles className="size-3.5" aria-hidden /> Ready
                 </span>
                 <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-                  Your RoboLab Learning Path Is Ready!
+                  Your GotYoBack Learning Path Is Ready!
                 </h1>
                 <p className="text-muted-foreground">
                   {level === "beginner" && "Great starting point: we'll begin with the fundamentals."}

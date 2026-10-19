@@ -99,7 +99,7 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
       {/* Header */}
       <header className="sticky top-0 z-40 relative border-b border-border bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
-          <button onClick={() => go("home")} className="flex shrink-0 items-center gap-2.5 font-display text-lg font-bold tracking-tight" aria-label="RoboLab home">
+          <button onClick={() => go("home")} className="flex shrink-0 items-center gap-2.5 font-display text-lg font-bold tracking-tight" aria-label="GotYoBack home">
             <span className="glow-primary grid size-8 place-items-center rounded-lg bg-primary">
               <Bot className="size-4.5 text-primary-foreground" aria-hidden />
             </span>
@@ -218,13 +218,19 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
       {/* Footer */}
       <footer className="border-t border-border py-8">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-1 px-4 text-center text-sm text-muted-foreground">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-4 text-center text-sm text-muted-foreground">
           <span className="flex items-center gap-1.5 font-display font-medium text-foreground">
-            <ShieldCheck className="size-4 text-primary" aria-hidden /> RoboLab
+            <ShieldCheck className="size-4 text-primary" aria-hidden /> GotYoBack
           </span>
           <span className="flex items-center gap-1.5">
             <MapPin className="size-3.5" aria-hidden /> Robotics, Electronics & IoT, learned by doing
           </span>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="mt-1 text-xs text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            Back to top
+          </button>
         </div>
       </footer>
 

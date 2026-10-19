@@ -24,7 +24,7 @@ export const defaultPreferences: Preferences = {
   lastActivity: null,
 }
 
-const KEY = "robolab-prefs-v1"
+const KEY = "gotyoback-prefs-v1"
 
 export function loadPreferences(): Preferences {
   try {

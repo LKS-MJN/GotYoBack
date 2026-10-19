@@ -1,4 +1,4 @@
--- RoboLab: progress table + row-level security.
+-- GotYoBack: progress table + row-level security.
 -- Run this in the Supabase SQL editor (Dashboard > SQL Editor > New query).
 -- Safe to re-run: uses "if not exists" throughout.
 
