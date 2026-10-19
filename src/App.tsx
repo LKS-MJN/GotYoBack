@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { Bot, ShieldCheck, Cloud, CloudOff, RotateCcw, MapPin, Menu, X } from "lucide-react"
+import { ShieldCheck, Cloud, CloudOff, RotateCcw, MapPin, Menu, X } from "lucide-react"
 import { useProgress } from "@/hooks/useProgress"
 import { AuthProvider, useAuth } from "@/providers/AuthProvider"
 import { cloudEnabled } from "@/lib/supabase"
@@ -99,10 +99,7 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
       {/* Header */}
       <header className="sticky top-0 z-40 relative border-b border-border bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
-          <button onClick={() => go("home")} className="flex shrink-0 items-center gap-2.5 font-display text-lg font-bold tracking-tight" aria-label="GotYoBack home">
-            <span className="glow-primary grid size-8 place-items-center rounded-lg bg-primary">
-              <Bot className="size-4.5 text-primary-foreground" aria-hidden />
-            </span>
+          <button onClick={() => go("home")} className="flex shrink-0 items-center gap-2 font-display text-lg font-bold tracking-tight" aria-label="GotYoBack home">
             <span className="hidden sm:inline">GotYo<span className="text-primary">Back</span></span>
           </button>
 
