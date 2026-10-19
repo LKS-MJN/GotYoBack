@@ -69,17 +69,17 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex rounded-lg border border-border bg-muted/40 p-0.5">
+          <div className="flex rounded-none border border-border bg-muted/40 p-0.5">
             <button
               onClick={() => setViewMode("text")}
-              className={`rounded-md px-2.5 py-1 text-xs transition-colors ${viewMode === "text" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              className={`rounded-none px-2.5 py-1 text-xs transition-colors ${viewMode === "text" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               aria-pressed={viewMode === "text"}
             >
               Text
             </button>
             <button
               onClick={() => setViewMode("visual")}
-              className={`rounded-md px-2.5 py-1 text-xs transition-colors ${viewMode === "visual" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              className={`rounded-none px-2.5 py-1 text-xs transition-colors ${viewMode === "visual" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               aria-pressed={viewMode === "visual"}
             >
               Visual
@@ -94,7 +94,7 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
         </div>
       </header>
 
-      <p className="rounded-lg border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs text-muted-foreground">
+      <p className="rounded-none border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs text-muted-foreground">
         Simulated in-browser. No real hardware or cloud.
       </p>
 
@@ -194,7 +194,7 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
               const sv = sensor?.value ?? 0
               const matching = r.op === ">" ? sv > r.threshold : sv < r.threshold
               return (
-                <li key={r.id} className="flex items-center justify-between gap-3 rounded-lg border border-border bg-background/40 p-4">
+                <li key={r.id} className="flex items-center justify-between gap-3 rounded-none border border-border bg-secondary p-4">
                   <div className="min-w-0 font-mono text-xs leading-relaxed">
                     <span className="text-muted-foreground">IF </span>
                     <span className="text-foreground">{sensor?.name}</span>
@@ -237,7 +237,7 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
             { l: "Output", v: sim.devices.some((d) => d.on) ? "actuator ON" : "idle", c: sim.devices.some((d) => d.on) ? "text-sim-warn" : "text-muted-foreground" },
           ].map((st, i, arr) => (
             <span key={st.l} className="flex items-center gap-3">
-              <span className="flex min-w-[72px] flex-col items-center rounded-lg border border-border bg-background/50 px-3 py-2.5 text-center">
+              <span className="flex min-w-[72px] flex-col items-center rounded-none border border-border bg-secondary px-3 py-2.5 text-center">
                 <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">{st.l}</span>
                 <span className={`mt-1 font-mono text-sm font-medium ${st.c}`}>{st.v}</span>
               </span>

@@ -24,7 +24,7 @@ function QuizBlock({ b }: { b: Extract<Block, { type: "quiz" }> }) {
               onClick={() => !checked && setPick(i)}
               disabled={checked}
               className={cn(
-                "flex items-center justify-between rounded-lg border px-4 py-2.5 text-left text-sm transition-colors",
+                "flex items-center justify-between rounded-none border px-4 py-2.5 text-left text-sm transition-colors",
                 right
                   ? "border-sim-ok bg-sim-ok/15 text-sim-ok"
                   : wrong
@@ -40,7 +40,7 @@ function QuizBlock({ b }: { b: Extract<Block, { type: "quiz" }> }) {
         })}
       </div>
       {checked && (
-        <p className="rounded-lg border border-border bg-background/50 p-3 text-sm text-muted-foreground">
+        <p className="rounded-none border border-border bg-secondary p-3 text-sm text-muted-foreground">
           <span className="font-medium text-foreground">Why: </span>
           {b.explain}
         </p>
@@ -54,7 +54,7 @@ function CodeBlock({ b }: { b: Extract<Block, { type: "code" }> }) {
   return (
     <section className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="rounded-md border border-border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">
+        <span className="rounded-none border border-border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">
           {b.language}
         </span>
         <Button
@@ -70,7 +70,7 @@ function CodeBlock({ b }: { b: Extract<Block, { type: "code" }> }) {
           <Copy aria-hidden /> {copied ? "Copied" : "Copy"}
         </Button>
       </div>
-      <pre className="overflow-x-auto rounded-lg border border-border bg-background/60 p-4 text-sm">
+      <pre className="overflow-x-auto rounded-none border border-border bg-secondary p-4 text-sm">
         <code className="font-mono text-foreground/90">{b.code}</code>
       </pre>
       {b.explain && <p className="text-sm text-muted-foreground">{b.explain}</p>}
@@ -209,7 +209,7 @@ export default function LessonView({
             .filter((p) => p.id !== lesson.pathId)
             .slice(0, 3)
             .map((p) => (
-              <div key={p.id} className="rounded-lg border border-border bg-background/40 p-3">
+              <div key={p.id} className="rounded-none border border-border bg-secondary p-3">
                 <p className="font-mono text-xs text-primary">Path {p.index}</p>
                 <p className="text-sm font-medium">{p.title}</p>
               </div>

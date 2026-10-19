@@ -144,7 +144,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
                         ? "bg-sim-idle/70"
                         : isGoal
                           ? "bg-sim-ok/15 hover:bg-sim-ok/25"
-                          : "bg-background/50 hover:bg-muted/70",
+                          : "bg-secondary hover:bg-muted/70",
                       !wall && onPath && "ring-1 ring-inset ring-primary/30",
                     )}
                   >
@@ -216,7 +216,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
             </div>
 
             {editingRules.map((rule, i) => (
-              <div key={rule.id} className="space-y-2 rounded-lg border border-border bg-background/40 p-3">
+              <div key={rule.id} className="space-y-2 rounded-none border border-border bg-secondary p-3">
                 <p className="font-mono text-xs text-muted-foreground">Rule {i + 1}</p>
                 <div className="flex flex-wrap items-center gap-2 text-sm">
                   <span className="text-muted-foreground">IF distance &lt;</span>
@@ -236,7 +236,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
                       )
                       applyRules(rules)
                     }}
-                    className="rounded-md border border-border bg-background px-2 py-1 text-sm"
+                    className="rounded-none border border-border bg-background px-2 py-1 text-sm"
                     aria-label="Action"
                   >
                     <option value="turn-right">turn right</option>
@@ -297,7 +297,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
               .slice()
               .reverse()
               .map((e) => (
-                <li key={e.step} className="flex flex-wrap items-baseline gap-2 rounded border border-border bg-background/50 px-2 py-1.5 leading-relaxed">
+                <li key={e.step} className="flex flex-wrap items-baseline gap-2 rounded border border-border bg-secondary px-2 py-1.5 leading-relaxed">
                   <span className="text-muted-foreground">#{String(e.step).padStart(3, "0")}</span>
                   <span className="text-primary">{e.distance}cm</span>
                   <span className={e.collided ? "text-sim-danger" : "text-foreground/80"}>

@@ -36,7 +36,7 @@ export default function Tour({
   return (
     <div className="pointer-events-none fixed inset-0 z-50 flex items-end justify-center p-4 sm:items-start sm:pt-24">
       {/* Dim backdrop, click-through except the card */}
-      <div className="pointer-events-none absolute inset-0 bg-background/60 backdrop-blur-[2px]" />
+      <div className="pointer-events-none absolute inset-0 bg-secondary/60 backdrop-blur-[2px]" />
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -49,7 +49,7 @@ export default function Tour({
           aria-label={`Tour step ${i + 1} of ${STEPS.length}`}
         >
           <div className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-lg bg-primary/15 text-primary">
+            <span className="grid size-10 place-items-center rounded-none bg-primary/15 text-primary">
               <step.icon className="size-5" aria-hidden />
             </span>
             <div>

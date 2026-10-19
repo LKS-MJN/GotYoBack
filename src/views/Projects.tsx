@@ -44,14 +44,14 @@ function ProjectCard({ p, go, complete, done }: { p: ProjectGuide; go: (v: View)
           <h2 className="font-display text-xl font-semibold">{p.title}</h2>
           <p className="text-sm text-muted-foreground">{p.objective}</p>
         </div>
-        <span className="shrink-0 rounded-lg bg-primary/15 px-2.5 py-1 font-display text-sm font-semibold text-primary">+60 XP</span>
+        <span className="shrink-0 rounded-none bg-primary/15 px-2.5 py-1 font-display text-sm font-semibold text-primary">+60 XP</span>
       </div>
 
       <div className="mt-3">
         <Section title="Components" defaultOpen>
           <ul className="flex flex-wrap gap-2">
             {p.components.map((c) => (
-              <li key={c} className="rounded-lg border border-border bg-background/40 px-2.5 py-1 text-xs text-muted-foreground">
+              <li key={c} className="rounded-none border border-border bg-secondary px-2.5 py-1 text-xs text-muted-foreground">
                 {c}
               </li>
             ))}
@@ -60,12 +60,12 @@ function ProjectCard({ p, go, complete, done }: { p: ProjectGuide; go: (v: View)
 
         <Section title="Code" defaultOpen>
           <div className="flex items-center justify-between">
-            <span className="rounded-md border border-border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">cpp</span>
+            <span className="rounded-none border border-border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">cpp</span>
             <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard?.writeText(p.code).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500) }, () => {}) }}>
               <Copy aria-hidden /> {copied ? "Copied" : "Copy"}
             </Button>
           </div>
-          <pre className="mt-2 overflow-x-auto rounded-lg border border-border bg-background/60 p-4 text-sm">
+          <pre className="mt-2 overflow-x-auto rounded-none border border-border bg-secondary p-4 text-sm">
             <code className="font-mono text-foreground/90">{p.code}</code>
           </pre>
           <p className="mt-2 text-sm text-muted-foreground">{p.explain}</p>
@@ -120,7 +120,7 @@ export default function Projects({ go, progress, completeProject }: ProgressApi 
             key={id}
             onClick={() => setFilter(id)}
             className={cn(
-              "rounded-lg border px-3 py-1.5 text-sm transition-colors",
+              "rounded-none border px-3 py-1.5 text-sm transition-colors",
               filter === id ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground",
             )}
             aria-pressed={filter === id}

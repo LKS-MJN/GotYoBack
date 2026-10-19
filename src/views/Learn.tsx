@@ -120,7 +120,7 @@ export default function Learn({ progress, openLesson }: ProgressApi & { openLess
                         <li key={l.id}>
                           <button
                             onClick={() => openLesson(l.id)}
-                            className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-muted/60"
+                            className="flex w-full items-center justify-between gap-3 rounded-none px-2 py-2 text-left transition-colors hover:bg-muted/60"
                           >
                             <span className="flex min-w-0 items-center gap-2">
                               <span className={cn("grid size-5 shrink-0 place-items-center rounded-full border", done(l.id) ? "border-sim-ok bg-sim-ok text-background" : "border-border")}>

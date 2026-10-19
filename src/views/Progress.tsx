@@ -76,7 +76,7 @@ export default function ProgressPage({
         <div className="mt-3"><ProgressBar value={percent} className="h-2" aria-label="Overall progress" /></div>
         <dl className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {stats.map((s) => (
-            <div key={s.label} className="rounded-lg border border-border bg-background/40 p-3">
+            <div key={s.label} className="rounded-none border border-border bg-secondary p-3">
               <dt className="flex items-center gap-1.5 text-xs text-muted-foreground"><s.icon className="size-3.5" aria-hidden /> {s.label}</dt>
               <dd className="mt-1 font-display text-lg font-semibold">{s.value}</dd>
             </div>

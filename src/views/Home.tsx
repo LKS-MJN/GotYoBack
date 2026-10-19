@@ -81,7 +81,7 @@ export default function Home({
 
       {/* Next step */}
       {nextStage && (
-        <section className="rounded-lg border border-primary/30 bg-primary/5 p-5">
+        <section className="rounded-none border border-primary/30 bg-primary/5 p-5">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="min-w-0 space-y-1">
               <p className="text-xs font-medium uppercase tracking-wide text-primary">Your next step</p>
@@ -108,9 +108,9 @@ export default function Home({
             <button
               key={q.view}
               onClick={() => go(q.view)}
-              className="flex flex-col items-start gap-2 rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
+              className="flex flex-col items-start gap-2 rounded-none border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
             >
-              <span className="grid size-9 place-items-center rounded-lg bg-primary/15 text-primary">
+              <span className="grid size-9 place-items-center rounded-none bg-primary/15 text-primary">
                 <q.icon className="size-4" aria-hidden />
               </span>
               <span className="text-sm font-medium">{q.label}</span>
@@ -129,7 +129,7 @@ export default function Home({
                 <button
                   key={l.id}
                   onClick={() => openLesson(l.id)}
-                  className="flex w-full items-start gap-3 rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
+                  className="flex w-full items-start gap-3 rounded-none border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
                 >
                   <span className="mt-0.5 shrink-0 border border-border px-1.5 py-0.5 font-mono text-[10px] uppercase text-muted-foreground">
                     {l.difficulty}
@@ -146,7 +146,7 @@ export default function Home({
         )}
 
         <div className="space-y-4">
-          <div className="rounded-lg border border-border bg-card p-5">
+          <div className="rounded-none border border-border bg-card p-5">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="font-display text-lg font-semibold">Your progress</h2>
               <span className="font-display text-2xl font-bold text-primary">{percent}%</span>
@@ -177,7 +177,7 @@ export default function Home({
           </div>
 
           {!prefs.onboarded ? (
-            <div className="rounded-lg border border-border bg-card p-5">
+            <div className="rounded-none border border-border bg-card p-5">
               <h2 className="font-display text-lg font-semibold">Personalize your path</h2>
               <p className="mt-1 text-sm text-muted-foreground">Answer a few questions for a tailored roadmap.</p>
               <div className="mt-3 flex gap-3">
@@ -190,7 +190,7 @@ export default function Home({
           ) : (
             <button
               onClick={startTour}
-              className="w-full rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
+              className="w-full rounded-none border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
             >
               <p className="text-sm font-medium">Take the product tour</p>
               <p className="mt-0.5 text-xs text-muted-foreground">Learn where everything lives.</p>
@@ -211,7 +211,7 @@ export default function Home({
                 <button
                   key={p.id}
                   onClick={() => go("learn")}
-                  className="rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
+                  className="rounded-none border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
                 >
                   <p className="text-xs font-medium text-primary">Path {p.index}</p>
                   <p className="mt-1 font-medium">{p.title}</p>
