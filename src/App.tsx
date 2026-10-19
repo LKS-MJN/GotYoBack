@@ -107,20 +107,17 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
           </button>
 
           <nav aria-label="Main" className="hidden min-w-0 md:block">
-            <ul className="flex items-center gap-1 text-sm">
+            <ul className="flex items-center gap-1 text-sm font-medium">
               {NAV.map((item) => {
                 const active = view === item.id || (view === "lesson" && item.id === "learn")
                 return (
-                  <li key={item.id} className="relative">
+                  <li key={item.id}>
                     <button
                       onClick={() => go(item.id)}
                       aria-current={active ? "page" : undefined}
-                      className={`relative rounded-lg px-3 py-1.5 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                      className={`rounded-none px-3 py-1.5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${active ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"}`}
                     >
-                      {active && (
-                        <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-lg bg-accent" transition={{ type: "spring", stiffness: 400, damping: 32 }} />
-                      )}
-                      <span className="relative z-10">{item.label}</span>
+                      {item.label}
                     </button>
                   </li>
                 )
