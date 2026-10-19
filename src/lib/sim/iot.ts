@@ -1,16 +1,18 @@
-// IoT smart-environment simulation engine.
-// Pure state machine driven by automation rules. Sensor values move on their
-// own each tick (simulating the environment) and the user can also nudge them.
-// Devices turn on/off only when a rule genuinely fires.
+﻿// IoT smart-environment simulation engine.
+// Sensors stay stable by default. They change gradually only when a
+// simulated event shifts their target. Devices turn on/off only when a
+// rule genuinely fires.
 
 export interface Sensor {
   id: string
   name: string
   unit: string
   value: number
+  target: number
   min: number
   max: number
-  drift: number // typical change per tick
+  drift: number
+  stable: boolean
 }
 
 export interface Device {
@@ -44,8 +46,9 @@ export interface IoTSim {
   devices: Device[]
   rules: AutoRule[]
   log: IoTEvent[]
-  /** Rolling history for the dashboard: sensorId -> recent values. */
   series: Record<string, number[]>
+  nextEventTick: number
+  motionTicksLeft: number
 }
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
@@ -55,10 +58,10 @@ export function createIoT(): IoTSim {
     tick: 0,
     running: false,
     sensors: [
-      { id: "temp", name: "Temperature", unit: "°C", value: 24, min: 10, max: 45, drift: 0.6 },
-      { id: "bright", name: "Brightness", unit: "lux", value: 320, min: 0, max: 900, drift: 40 },
-      { id: "motion", name: "Motion", unit: "detected", value: 0, min: 0, max: 1, drift: 0.3 },
-      { id: "water", name: "Water level", unit: "%", value: 35, min: 0, max: 100, drift: 3 },
+      { id: "temp", name: "Temperature", unit: "°C", value: 24, target: 24, min: 10, max: 45, drift: 0.4, stable: true },
+      { id: "bright", name: "Brightness", unit: "lux", value: 320, target: 320, min: 0, max: 900, drift: 12, stable: true },
+      { id: "motion", name: "Motion", unit: "detected", value: 0, target: 0, min: 0, max: 1, drift: 0, stable: true },
+      { id: "water", name: "Water level", unit: "%", value: 35, target: 35, min: 0, max: 100, drift: 1.5, stable: true },
     ],
     devices: [
       { id: "fan", name: "Cooling Fan", on: false, icon: "fan" },
@@ -74,25 +77,59 @@ export function createIoT(): IoTSim {
     ],
     log: [],
     series: { temp: [24], bright: [320], motion: [0], water: [35] },
+    nextEventTick: 20,
+    motionTicksLeft: 0,
   }
 }
 
-/** Nudge the environment one tick: drift sensors, then evaluate every rule. */
+const EVENTS: { sensorId: string; apply: () => Partial<Sensor> }[] = [
+  { sensorId: "temp", apply: () => ({ target: 32, stable: false }) },
+  { sensorId: "temp", apply: () => ({ target: 18, stable: false }) },
+  { sensorId: "bright", apply: () => ({ target: 500, stable: false }) },
+  { sensorId: "bright", apply: () => ({ target: 120, stable: false }) },
+  { sensorId: "water", apply: () => ({ target: 70, stable: false }) },
+  { sensorId: "water", apply: () => ({ target: 10, stable: false }) },
+]
+
 export function tickIoT(sim: IoTSim): IoTSim {
+  let motionTicksLeft = sim.motionTicksLeft
+
   const sensors = sim.sensors.map((s) => {
-    // Semi-random but bounded environment movement.
-    const jitter = (Math.random() - 0.5) * 2 * s.drift
-    const value = clamp(s.value + jitter, s.min, s.max)
-    // Motion flickers more abruptly.
-    const v = s.id === "motion" ? (Math.random() > 0.7 ? 1 : 0) : Math.round(value * 10) / 10
-    return { ...s, value: v }
+    if (s.id === "motion") {
+      if (motionTicksLeft > 0) {
+        motionTicksLeft--
+        return { ...s, value: 1 }
+      }
+      return { ...s, value: 0 }
+    }
+    if (s.stable) return s
+    const diff = s.target - s.value
+    if (Math.abs(diff) <= s.drift) {
+      return { ...s, value: s.target, stable: true }
+    }
+    const value = clamp(s.value + Math.sign(diff) * s.drift, s.min, s.max)
+    return { ...s, value: Math.round(value * 10) / 10 }
   })
+
+  let nextEventTick = sim.nextEventTick
+  if (sim.tick + 1 >= nextEventTick) {
+    const evt = EVENTS[Math.floor(Math.random() * EVENTS.length)]
+    if (evt.sensorId === "motion") {
+      motionTicksLeft = 4
+    } else {
+      sensors.forEach((s) => {
+        if (s.id === evt.sensorId) {
+          Object.assign(s, evt.apply())
+        }
+      })
+    }
+    nextEventTick = sim.tick + 1 + 15 + Math.floor(Math.random() * 25)
+  }
 
   const bySensor = new Map(sensors.map((s) => [s.id, s.value]))
   const devices = sim.devices.map((d) => ({ ...d }))
   const deviceById = new Map(devices.map((d) => [d.id, d]))
   const log: IoTEvent[] = []
-
   for (const r of sim.rules) {
     const sv = bySensor.get(r.sensorId)
     if (sv === undefined) continue
@@ -103,20 +140,14 @@ export function tickIoT(sim: IoTSim): IoTSim {
     if (dev.on !== target) {
       dev.on = target
       const sensor = sensors.find((s) => s.id === r.sensorId)
-      log.push({
-        tick: sim.tick + 1,
-        ruleId: r.id,
-        deviceId: r.deviceId,
-        fired: true,
-        note: `${sensor?.name} ${r.op} ${r.threshold}: ${dev.name} turned ${target ? "ON" : "OFF"}.`,
-      })
+      log.push({ tick: sim.tick + 1, ruleId: r.id, deviceId: r.deviceId, fired: true, note: `${sensor?.name} ${r.op} ${r.threshold}: ${dev.name} turned ${target ? "ON" : "OFF"}.` })
     }
   }
 
   const series: Record<string, number[]> = { ...sim.series }
   for (const s of sensors) {
     const arr = [...(series[s.id] ?? []), s.value]
-    series[s.id] = arr.slice(-40) // keep last 40 points
+    series[s.id] = arr.slice(-40)
   }
 
   return {
@@ -126,10 +157,20 @@ export function tickIoT(sim: IoTSim): IoTSim {
     devices: devices.map((d) => deviceById.get(d.id)!),
     log: [...sim.log, ...log].slice(-60),
     series,
+    nextEventTick,
+    motionTicksLeft,
+  }
+}
+
+export function setSensorValue(sim: IoTSim, id: string, value: number): IoTSim {
+  return {
+    ...sim,
+    sensors: sim.sensors.map((s) =>
+      s.id === id ? { ...s, value, target: value, stable: true } : s,
+    ),
   }
 }
 
 export function resetIoT(): IoTSim {
-  const fresh = createIoT()
-  return fresh
+  return createIoT()
 }
