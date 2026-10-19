@@ -130,11 +130,8 @@ export default function Onboarding({
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.05 * i }}
-                    className="surface-card flex items-start gap-3 p-5"
+                    className="flex items-start gap-3 border-2 border-border bg-card p-5"
                   >
-                    <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary/15 text-primary">
-                      <e.icon className="size-4.5" aria-hidden />
-                    </span>
                     <div>
                       <h2 className="font-display font-semibold">{e.title}</h2>
                       <p className="text-sm text-muted-foreground">{e.desc}</p>

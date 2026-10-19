@@ -167,15 +167,13 @@ export default function IoTLab({ recordExperiment }: ProgressApi) {
                 <div
                   key={d.id}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg border p-4 transition-colors",
-                    d.on ? "border-sim-warn/50 bg-sim-warn/10" : "border-border bg-background/40",
+                    "flex items-center gap-3 rounded-none border-2 p-4 transition-colors",
+                    d.on ? "border-sim-warn bg-sim-warn/10" : "border-border bg-card",
                   )}
                 >
-                  <span className={cn("grid size-10 shrink-0 place-items-center rounded-lg", d.on ? "bg-sim-warn/20 text-sim-warn" : "bg-muted text-muted-foreground")}>
-                    <Icon className={cn("size-5", d.on && "animate-pulse")} aria-hidden />
-                  </span>
+                  <Icon className={cn("size-5 shrink-0", d.on ? "text-sim-warn" : "text-muted-foreground", d.on && "animate-pulse")} aria-hidden />
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">{d.name}</p>
+                    <p className="text-sm font-medium">{d.name}</p>
                     <p className={cn("font-mono text-xs", d.on ? "text-sim-warn" : "text-muted-foreground")}>
                       {d.on ? "ON" : "OFF"}
                     </p>

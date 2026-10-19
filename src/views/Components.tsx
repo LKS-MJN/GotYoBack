@@ -270,9 +270,7 @@ export default function Components() {
               className="flex flex-col gap-2 border-2 border-border bg-card p-4 text-left transition-colors hover:border-primary"
             >
               <div className="flex items-center gap-3">
-                <span className="grid size-9 shrink-0 place-items-center border-2 border-border bg-background">
-                  <ComponentIcon id={c.id} category={c.category} />
-                </span>
+                <ComponentIcon id={c.id} category={c.category} />
                 <div className="min-w-0">
                   <h2 className="font-display font-bold leading-tight">{c.name}</h2>
                   <p className="font-mono text-[10px] uppercase text-muted-foreground">{CATEGORY_LABEL[c.category]}</p>

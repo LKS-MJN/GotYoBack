@@ -131,15 +131,7 @@ export default function Home({
                   onClick={() => openLesson(l.id)}
                   className="flex w-full items-start gap-3 rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
                 >
-                  <span
-                    className={`mt-0.5 shrink-0 rounded px-2 py-0.5 text-xs font-medium capitalize ${
-                      l.difficulty === "beginner"
-                        ? "bg-sim-ok/15 text-sim-ok"
-                        : l.difficulty === "intermediate"
-                          ? "bg-sim-warn/15 text-sim-warn"
-                          : "bg-sim-danger/15 text-sim-danger"
-                    }`}
-                  >
+                  <span className="mt-0.5 shrink-0 border border-border px-1.5 py-0.5 font-mono text-[10px] uppercase text-muted-foreground">
                     {l.difficulty}
                   </span>
                   <div className="min-w-0 flex-1">
