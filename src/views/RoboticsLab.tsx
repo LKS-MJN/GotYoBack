@@ -25,6 +25,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
   const [editThreshold, setEditThreshold] = useState("20")
   const [challenge, setChallenge] = useState(true)
   const [view3D, setView3D] = useState(false)
+  const [speed, setSpeed] = useState(1)
   const counted = useRef(false)
 
   const distance = useMemo(() => senseDistance(world), [world])
@@ -36,7 +37,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
       setRunning(false)
       return
     }
-    const t = setTimeout(() => setWorld((w) => stepWorld(w)), 350)
+    const t = setTimeout(() => setWorld((w) => stepWorld(w)), Math.max(150, 400 / speed))
     return () => clearTimeout(t)
   }, [running, world])
 
@@ -112,7 +113,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
 
       <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
         {/* ---------- Maze ---------- */}
-        <div className="surface-card p-4 sm:p-5">
+        <div className="surface-card mx-auto max-w-2xl p-4 sm:p-5">
           <div
             className="lab-grid grid gap-1 transition-transform duration-500"
             style={{
@@ -151,8 +152,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
                     {isStart && !isRobot && !isGoal && <span className="font-mono text-[10px] text-muted-foreground">S</span>}
                     {isRobot && (
                       <span
-                        className="grid size-6 place-items-center rounded-full bg-primary font-mono text-xs text-primary-foreground"
-                        style={{ boxShadow: "0 0 0 3px oklch(0.74 0.12 195 / 0.3)" }}
+                        className="grid size-7 place-items-center rounded-full bg-primary font-mono text-xs font-bold text-primary-foreground shadow-[0_0_0_3px_var(--primary)]"
                       >
                         {ARROW[world.robot.heading]}
                       </span>
@@ -187,6 +187,20 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
               >
                 {view3D ? "2D view" : "3D view"}
               </Button>
+            </div>
+            <div className="mt-3 flex items-center gap-3 text-sm">
+              <span className="text-muted-foreground">Speed</span>
+              <input
+                type="range"
+                min="0.5"
+                max="3"
+                step="0.5"
+                value={speed}
+                onChange={(e) => setSpeed(Number(e.target.value))}
+                className="flex-1 accent-[var(--sim-target)]"
+                aria-label="Simulation speed"
+              />
+              <span className="w-8 font-mono text-xs text-foreground">{speed}x</span>
             </div>
             <div className="mt-4 flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Steps taken</span>
@@ -278,12 +292,12 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
         {world.log.length === 0 ? (
           <p className="text-sm text-muted-foreground">No events yet. Run or step the robot to see what it decides.</p>
         ) : (
-          <ul className="max-h-64 space-y-1.5 overflow-y-auto font-mono text-xs">
+          <ul className="max-h-64 space-y-2 overflow-y-auto font-mono text-xs">
             {world.log
               .slice()
               .reverse()
               .map((e) => (
-                <li key={e.step} className="flex gap-2 leading-relaxed">
+                <li key={e.step} className="flex flex-wrap items-baseline gap-2 rounded border border-border bg-background/50 px-2 py-1.5 leading-relaxed">
                   <span className="text-muted-foreground">#{String(e.step).padStart(3, "0")}</span>
                   <span className="text-primary">{e.distance}cm</span>
                   <span className={e.collided ? "text-sim-danger" : "text-foreground/80"}>
