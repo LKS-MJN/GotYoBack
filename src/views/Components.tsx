@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { motion } from "motion/react"
-import { Search, Info } from "lucide-react"
+import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { componentLibrary, componentCategories, type ComponentEntry } from "@/data/hardware"
 import { cn } from "@/lib/utils"
 
 function ComponentIcon({ category }: { category: ComponentEntry["category"] }) {
-  const common = "size-6 text-primary"
+  const common = "size-7 text-primary"
   switch (category) {
     case "module":
       return (
@@ -20,7 +21,9 @@ function ComponentIcon({ category }: { category: ComponentEntry["category"] }) {
     case "power":
       return (
         <svg viewBox="0 0 24 24" className={common} fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
+          <rect x="6" y="4" width="12" height="16" rx="2" />
+          <path d="M9 8h6M9 12h6M9 16h3" />
+          <path d="M12 2v2M12 20v2" />
         </svg>
       )
     case "passive":
@@ -61,24 +64,40 @@ function ComponentIcon({ category }: { category: ComponentEntry["category"] }) {
       return null
   }
 }
+
+const CATEGORY_LABEL: Record<ComponentEntry["category"], string> = {
+  module: "Boards",
+  power: "Power",
+  passive: "Passive",
+  semiconductor: "Semiconductors",
+  input: "Sensors (Input)",
+  output: "Actuators (Output)",
+  control: "Drivers & Control",
+}
+
 export default function Components() {
   const [q, setQ] = useState("")
   const [cat, setCat] = useState<string>("all")
+  const [selected, setSelected] = useState<ComponentEntry | null>(null)
 
   const list = componentLibrary.filter((c) => {
-    const matchesQ = !q || c.name.toLowerCase().includes(q.toLowerCase()) || c.whatItDoes.toLowerCase().includes(q.toLowerCase())
+    const matchesQ =
+      !q ||
+      c.name.toLowerCase().includes(q.toLowerCase()) ||
+      c.whatItDoes.toLowerCase().includes(q.toLowerCase()) ||
+      c.tip.toLowerCase().includes(q.toLowerCase())
     const matchesCat = cat === "all" || c.category === cat
     return matchesQ && matchesCat
   })
 
   return (
     <div className="space-y-6">
-      <header className="space-y-4">
-        <div className="space-y-1.5">
-          <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Components Library</h1>
-          <p className="text-muted-foreground">The parts every circuit and robot is built from.</p>
+      <header className="flex flex-wrap items-end justify-between gap-3 border-b border-border pb-4">
+        <div>
+          <h1 className="font-display text-2xl font-semibold tracking-tight">Components Library</h1>
+          <p className="text-sm text-muted-foreground">Parts used in circuits and robots. Click a card for details.</p>
         </div>
-        <div className="relative max-w-md">
+        <div className="relative w-full max-w-xs">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search components..." className="pl-9" aria-label="Search components" />
         </div>
@@ -87,68 +106,124 @@ export default function Components() {
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setCat("all")}
-          className={cn("rounded-lg border px-3 py-1.5 text-sm transition-colors", cat === "all" ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground")}
+          className={cn(
+            "rounded-lg border px-3 py-1.5 text-sm transition-colors",
+            cat === "all" ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground",
+          )}
           aria-pressed={cat === "all"}
         >
-          All
+          All ({componentLibrary.length})
         </button>
-        {componentCategories.map((c) => (
-          <button
-            key={c.id}
-            onClick={() => setCat(c.id)}
-            className={cn("rounded-lg border px-3 py-1.5 text-sm transition-colors", cat === c.id ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground")}
-            aria-pressed={cat === c.id}
-          >
-            {c.label}
-          </button>
-        ))}
+        {componentCategories.map((c) => {
+          const count = componentLibrary.filter((x) => x.category === c.id).length
+          if (count === 0) return null
+          return (
+            <button
+              key={c.id}
+              onClick={() => setCat(c.id)}
+              className={cn(
+                "rounded-lg border px-3 py-1.5 text-sm transition-colors",
+                cat === c.id ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground",
+              )}
+              aria-pressed={cat === c.id}
+            >
+              {c.label} ({count})
+            </button>
+          )
+        })}
       </div>
 
       {list.length === 0 ? (
-        <div className="surface-card p-8 text-center text-sm text-muted-foreground">
-          No components match that search.
+        <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+          No components match. Try "sensor", "motor", or "resistor".
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((c, i) => (
-            <motion.div
+            <motion.button
               key={c.id}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: Math.min(i * 0.03, 0.3) }}
-              className="surface-card flex flex-col gap-3 p-5"
+              transition={{ delay: Math.min(i * 0.02, 0.2) }}
+              onClick={() => setSelected(c)}
+              className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
             >
               <div className="flex items-center gap-3">
-                <span className="grid size-11 shrink-0 place-items-center rounded-lg border border-border bg-background/50">
+                <span className="grid size-10 shrink-0 place-items-center rounded-lg border border-border bg-background/50">
                   <ComponentIcon category={c.category} />
                 </span>
                 <div className="min-w-0">
-                  <h2 className="font-display font-semibold">{c.name}</h2>
-                  <p className="font-mono text-[11px] uppercase text-muted-foreground">{c.category}</p>
+                  <h2 className="font-display font-semibold leading-tight">{c.name}</h2>
+                  <p className="font-mono text-[11px] uppercase text-muted-foreground">{CATEGORY_LABEL[c.category]}</p>
                 </div>
               </div>
 
-              <p className="text-sm leading-relaxed text-muted-foreground">{c.whatItDoes}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">{c.whatItDoes}</p>
 
-              <div className="space-y-1.5 text-xs">
-                <p><span className="text-muted-foreground">Key spec: </span><span className="text-foreground/85">{c.keySpec}</span></p>
-                <div className="flex flex-wrap gap-1.5">
-                  {c.pinout.map((pin) => (
-                    <span key={pin} className="rounded border border-border bg-background/50 px-1.5 py-0.5 font-mono text-muted-foreground">
-                      {pin}
-                    </span>
-                  ))}
-                </div>
+              <div className="mt-auto flex flex-wrap gap-1.5">
+                {c.pinout.slice(0, 4).map((pin) => (
+                  <span key={pin} className="rounded border border-border bg-background/50 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                    {pin}
+                  </span>
+                ))}
+                {c.pinout.length > 4 && (
+                  <span className="rounded border border-border bg-background/50 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                    +{c.pinout.length - 4}
+                  </span>
+                )}
               </div>
-
-              <p className="mt-auto flex gap-2 rounded-lg border border-primary/20 bg-primary/5 p-2.5 text-xs leading-relaxed text-muted-foreground">
-                <Info className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden />
-                <span>{c.tip}</span>
-              </p>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
       )}
+
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-lg">
+          {selected && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-3">
+                  <span className="grid size-12 shrink-0 place-items-center rounded-lg border border-border bg-background/50">
+                    <ComponentIcon category={selected.category} />
+                  </span>
+                  <div>
+                    <DialogTitle className="font-display text-xl">{selected.name}</DialogTitle>
+                    <DialogDescription className="font-mono text-xs uppercase">{CATEGORY_LABEL[selected.category]}</DialogDescription>
+                  </div>
+                </div>
+              </DialogHeader>
+
+              <div className="space-y-4 text-sm">
+                <div>
+                  <p className="mb-1 text-xs font-medium uppercase tracking-wide text-primary">What it does</p>
+                  <p className="leading-relaxed text-muted-foreground">{selected.whatItDoes}</p>
+                </div>
+
+                <div>
+                  <p className="mb-1 text-xs font-medium uppercase tracking-wide text-primary">Key spec</p>
+                  <p className="text-muted-foreground">{selected.keySpec}</p>
+                </div>
+
+                <div>
+                  <p className="mb-1 text-xs font-medium uppercase tracking-wide text-primary">Pinout</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selected.pinout.map((pin) => (
+                      <span key={pin} className="rounded border border-border bg-background/50 px-2 py-1 font-mono text-xs text-muted-foreground">
+                        {pin}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
+                  <p className="mb-1 text-xs font-medium uppercase tracking-wide text-primary">Tip</p>
+                  <p className="text-xs leading-relaxed text-muted-foreground">{selected.tip}</p>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

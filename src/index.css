@@ -136,7 +136,18 @@
   }
 }
 
-/* Respect reduced-motion preferences: collapse all animation/transition durations. */
+/* Hide scrollbars globally (scroll still works via wheel/touch/keyboard). */
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

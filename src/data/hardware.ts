@@ -13,6 +13,16 @@ export interface ComponentEntry {
 
 export const componentLibrary: ComponentEntry[] = [
   {
+    id: "battery",
+    name: "Battery (9V)",
+    category: "power",
+    symbol: "9V",
+    whatItDoes: "Portable DC power source. Supplies voltage to your circuit.",
+    keySpec: "Nominal voltage, capacity in mAh.",
+    pinout: ["Positive (+)", "Negative (-)"],
+    tip: "Match battery voltage to your components. Use a regulator for stable 5V or 3.3V.",
+  },
+  {
     id: "resistor",
     name: "Resistor",
     category: "passive",
