@@ -54,75 +54,85 @@ export default function Home({
     .slice(0, 3)
 
   return (
-    <div className="space-y-6">
-      {/* Compact header */}
-      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-border pb-4">
-        <div>
-          <h1 className="font-display text-2xl font-semibold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">
-            {resume ? `Continue "${resume.title}"` : nextStage ? nextStage.desc : "Pick a path to start learning."}
+    <div className="space-y-8">
+      {/* Hero */}
+      <section className="space-y-4">
+        <div className="space-y-2">
+          <h1 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+            {resume ? `Continue: ${resume.title}` : "What should I do next?"}
+          </h1>
+          <p className="max-w-2xl text-muted-foreground">
+            {resume
+              ? "Pick up where you left off."
+              : nextStage
+                ? nextStage.desc
+                : "Learn electronics, program microcontrollers, experiment with virtual hardware, and build intelligent systems."}
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button size="sm" onClick={() => (resume ? openLesson(resume.id) : go("learn"))}>
-            <Play aria-hidden className="size-3.5" /> {resume ? "Continue" : "Start"}
+        <div className="flex flex-wrap gap-3">
+          <Button onClick={() => (resume ? openLesson(resume.id) : go("learn"))}>
+            <Play aria-hidden className="size-4" /> {resume ? "Continue lesson" : "Start learning"}
           </Button>
-          <Button size="sm" variant="outline" onClick={() => go("robotics")}>
-            <Bot aria-hidden className="size-3.5" /> Robotics Lab
+          <Button variant="outline" onClick={() => go("robotics")}>
+            <Bot aria-hidden className="size-4" /> Open Robotics Lab
           </Button>
         </div>
-      </div>
+      </section>
 
       {/* Next step */}
       {nextStage && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3">
-          <div className="min-w-0">
-            <p className="text-xs font-medium text-primary">Next step</p>
-            <p className="truncate text-sm font-medium">{nextStage.title}</p>
+        <section className="rounded-lg border border-primary/30 bg-primary/5 p-5">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="min-w-0 space-y-1">
+              <p className="text-xs font-medium uppercase tracking-wide text-primary">Your next step</p>
+              <h2 className="font-display text-lg font-semibold">{nextStage.title}</h2>
+              <p className="text-sm text-muted-foreground">{nextStage.desc}</p>
+            </div>
+            <Button
+              onClick={() => {
+                if (nextStage.view === "learn" && nextStage.lessonId) openLesson(nextStage.lessonId)
+                else go(nextStage.view)
+              }}
+            >
+              Go <ArrowRight aria-hidden className="size-4" />
+            </Button>
           </div>
-          <Button
-            size="sm"
-            onClick={() => {
-              if (nextStage.view === "learn" && nextStage.lessonId) openLesson(nextStage.lessonId)
-              else go(nextStage.view)
-            }}
-          >
-            Go <ArrowRight aria-hidden className="size-3.5" />
-          </Button>
-        </div>
+        </section>
       )}
 
       {/* Quick access */}
-      <div>
-        <h2 className="mb-2 text-sm font-medium text-muted-foreground">Quick access</h2>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+      <section>
+        <h2 className="mb-3 font-display text-lg font-semibold">Quick access</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {QUICK.map((q) => (
             <button
               key={q.view}
               onClick={() => go(q.view)}
-              className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-left text-sm transition-colors hover:border-primary/40 hover:bg-muted/40"
+              className="flex flex-col items-start gap-2 rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
             >
-              <q.icon className="size-4 shrink-0 text-primary" aria-hidden />
-              <span className="truncate">{q.label}</span>
+              <span className="grid size-9 place-items-center rounded-lg bg-primary/15 text-primary">
+                <q.icon className="size-4" aria-hidden />
+              </span>
+              <span className="text-sm font-medium">{q.label}</span>
             </button>
           ))}
         </div>
-      </div>
+      </section>
 
       {/* Recommended + Progress */}
-      <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+      <section className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         {recommended.length > 0 && (
           <div>
-            <h2 className="mb-2 text-sm font-medium text-muted-foreground">Recommended for you</h2>
-            <div className="space-y-2">
+            <h2 className="mb-3 font-display text-lg font-semibold">Recommended for you</h2>
+            <div className="space-y-3">
               {recommended.map((l) => (
                 <button
                   key={l.id}
                   onClick={() => openLesson(l.id)}
-                  className="flex w-full items-start gap-3 rounded-lg border border-border bg-card px-3 py-2.5 text-left transition-colors hover:border-primary/40"
+                  className="flex w-full items-start gap-3 rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
                 >
                   <span
-                    className={`mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${
+                    className={`mt-0.5 shrink-0 rounded px-2 py-0.5 text-xs font-medium capitalize ${
                       l.difficulty === "beginner"
                         ? "bg-sim-ok/15 text-sim-ok"
                         : l.difficulty === "intermediate"
@@ -133,48 +143,54 @@ export default function Home({
                     {l.difficulty}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium">{l.title}</p>
-                    <p className="truncate text-xs text-muted-foreground">{l.summary}</p>
+                    <p className="font-medium">{l.title}</p>
+                    <p className="mt-0.5 text-sm text-muted-foreground">{l.summary}</p>
                   </div>
-                  <span className="shrink-0 text-xs text-muted-foreground">{l.minutes}m</span>
+                  <span className="shrink-0 text-xs text-muted-foreground">{l.minutes} min</span>
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        <div className="space-y-3">
-          <div className="rounded-lg border border-border bg-card p-3">
-            <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm font-medium">Progress</span>
-              <span className="text-sm font-semibold text-primary">{percent}%</span>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-border bg-card p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="font-display text-lg font-semibold">Your progress</h2>
+              <span className="font-display text-2xl font-bold text-primary">{percent}%</span>
             </div>
-            <Progress value={percent} className="h-1.5" aria-label="Overall progress" />
-            <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
-              <span className="text-muted-foreground">
-                Lessons <span className="text-foreground">{progress.lessonsCompleted.length}/{allLessons.length}</span>
-              </span>
-              <span className="text-muted-foreground">
-                Projects <span className="text-foreground">{progress.projectsDone.length}/{projects.length}</span>
-              </span>
-              <span className="text-muted-foreground">
-                Missions <span className="text-foreground">{progress.missionsDone.length}</span>
-              </span>
-              <span className="text-muted-foreground">
-                XP <span className="text-foreground">{progress.xp}</span>
-              </span>
+            <Progress value={percent} className="h-2" aria-label="Overall progress" />
+            <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <p className="text-muted-foreground">Lessons</p>
+                <p className="font-semibold">
+                  {progress.lessonsCompleted.length}/{allLessons.length}
+                </p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Projects</p>
+                <p className="font-semibold">
+                  {progress.projectsDone.length}/{projects.length}
+                </p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Missions</p>
+                <p className="font-semibold">{progress.missionsDone.length}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">XP</p>
+                <p className="font-semibold">{progress.xp}</p>
+              </div>
             </div>
           </div>
 
           {!prefs.onboarded ? (
-            <div className="rounded-lg border border-border bg-card p-3">
-              <p className="text-sm font-medium">Personalize your path</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">Answer a few questions for a tailored roadmap.</p>
-              <div className="mt-2 flex gap-2">
-                <Button size="sm" onClick={editPrefs}>
-                  Set up
-                </Button>
-                <Button size="sm" variant="ghost" onClick={startTour}>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h2 className="font-display text-lg font-semibold">Personalize your path</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Answer a few questions for a tailored roadmap.</p>
+              <div className="mt-3 flex gap-3">
+                <Button onClick={editPrefs}>Set up</Button>
+                <Button variant="ghost" onClick={startTour}>
                   Tour
                 </Button>
               </div>
@@ -182,19 +198,20 @@ export default function Home({
           ) : (
             <button
               onClick={startTour}
-              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted/40"
+              className="w-full rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
             >
-              Take the product tour
+              <p className="text-sm font-medium">Take the product tour</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">Learn where everything lives.</p>
             </button>
           )}
         </div>
-      </div>
+      </section>
 
       {/* Explore */}
       {paths.filter((p) => !prefs.interests.some((i) => INTEREST_OPTIONS.find((o) => o.id === i)?.pathId === p.id)).length > 0 && (
-        <div>
-          <h2 className="mb-2 text-sm font-medium text-muted-foreground">Explore other topics</h2>
-          <div className="grid gap-2 sm:grid-cols-3">
+        <section>
+          <h2 className="mb-3 font-display text-lg font-semibold">Explore other topics</h2>
+          <div className="grid gap-3 sm:grid-cols-3">
             {paths
               .filter((p) => !prefs.interests.some((i) => INTEREST_OPTIONS.find((o) => o.id === i)?.pathId === p.id))
               .slice(0, 3)
@@ -202,14 +219,15 @@ export default function Home({
                 <button
                   key={p.id}
                   onClick={() => go("learn")}
-                  className="rounded-lg border border-border bg-card px-3 py-2 text-left transition-colors hover:border-primary/40"
+                  className="rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-primary/40"
                 >
                   <p className="text-xs font-medium text-primary">Path {p.index}</p>
-                  <p className="text-sm font-medium">{p.title}</p>
+                  <p className="mt-1 font-medium">{p.title}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{p.blurb}</p>
                 </button>
               ))}
           </div>
-        </div>
+        </section>
       )}
     </div>
   )
