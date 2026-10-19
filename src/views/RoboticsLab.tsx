@@ -113,7 +113,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
 
       <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
         {/* ---------- Maze ---------- */}
-        <div className="surface-card mx-auto max-w-3xl p-4 sm:p-5">
+        <div className="surface-card p-4 sm:p-5">
           <div
             className="lab-grid grid gap-0.5 transition-transform duration-500"
             style={{
@@ -162,7 +162,7 @@ export default function RoboticsLab({ recordExperiment }: ProgressApi) {
               }),
             )}
           </div>
-          <p className="mt-3 text-center text-xs text-muted-foreground">
+          <p className="mt-3 text-center text-sm text-muted-foreground">
             Click an empty cell to toggle a wall. Border walls are locked.
           </p>
         </div>
