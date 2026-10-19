@@ -1,13 +1,9 @@
-import { motion } from "motion/react"
-import {
-  Play, BookOpen, Bot, Wifi, Wrench, CircuitBoard, ArrowRight, Target, Trophy, Sparkles, Route,
-} from "lucide-react"
+import { Play, BookOpen, Bot, Wifi, Wrench, CircuitBoard, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { buildRoadmap, type Preferences, INTEREST_OPTIONS } from "@/lib/preferences"
 import { lessons, paths, allLessons } from "@/data/curriculum"
 import { projects } from "@/data/projects"
-import { cn } from "@/lib/utils"
 import type { View } from "@/lib/view"
 import type { ProgressApi } from "@/hooks/useProgress"
 
@@ -44,11 +40,8 @@ export default function Home({
 }) {
   const roadmap = prefs.onboarded ? buildRoadmap(prefs, lessonPicker) : []
   const nextStage = roadmap[0] ?? null
-
-  // Continue learning: last opened activity, else first unfinished recommended lesson.
   const last = prefs.lastActivity?.view === "lesson" && prefs.lastActivity.id ? lessons[prefs.lastActivity.id] : null
   const resume = last && !progress.lessonsCompleted.includes(last.id) ? last : null
-
   const recommended = (prefs.interests.length
     ? prefs.interests
         .map((i) => INTEREST_OPTIONS.find((o) => o.id === i)?.pathId)
@@ -60,171 +53,164 @@ export default function Home({
     .filter((l) => l && !progress.lessonsCompleted.includes(l.id))
     .slice(0, 3)
 
-  const stageIndex = Math.min(roadmap.length ? 1 : 0, roadmap.length)
-
-  const metrics = [
-    { label: "Lessons", value: `${progress.lessonsCompleted.length}/${allLessons.length}`, icon: BookOpen },
-    { label: "Missions", value: `${progress.missionsDone.length}/0`, icon: Target },
-    { label: "Projects", value: `${progress.projectsDone.length}/${projects.length}`, icon: Trophy },
-    { label: "XP", value: `${progress.xp}`, icon: Sparkles },
-  ]
-
   return (
-    <div className="space-y-10">
-      {/* A. Continue learning / hero */}
-      <section className="space-y-5">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-            <Route className="size-3.5" aria-hidden /> Interactive Robotics & IoT Lab
-          </span>
-          <h1 className="max-w-2xl font-display text-[clamp(2rem,5vw,3rem)] font-bold leading-[1.05] tracking-tight">
-            What should I do next?
-          </h1>
-          <p className="max-w-xl text-lg text-muted-foreground">
-            {resume
-              ? `Pick up where you left off in "${resume.title}".`
-              : nextStage
-                ? nextStage.desc
-                : "Learn, visualize, experiment, and build, with no hardware needed."}
+    <div className="space-y-6">
+      {/* Compact header */}
+      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-border pb-4">
+        <div>
+          <h1 className="font-display text-2xl font-semibold tracking-tight">Dashboard</h1>
+          <p className="text-sm text-muted-foreground">
+            {resume ? `Continue "${resume.title}"` : nextStage ? nextStage.desc : "Pick a path to start learning."}
           </p>
-        </motion.div>
-
-        <div className="flex flex-wrap gap-3">
-          <Button size="lg" onClick={() => (resume ? openLesson(resume.id) : go("learn"))}>
-            <Play aria-hidden /> {resume ? "Continue lesson" : "Start Learning"}
+        </div>
+        <div className="flex gap-2">
+          <Button size="sm" onClick={() => (resume ? openLesson(resume.id) : go("learn"))}>
+            <Play aria-hidden className="size-3.5" /> {resume ? "Continue" : "Start"}
           </Button>
-          <Button size="lg" variant="outline" onClick={() => go("robotics")}>
-            <Bot aria-hidden /> Open Robotics Lab
+          <Button size="sm" variant="outline" onClick={() => go("robotics")}>
+            <Bot aria-hidden className="size-3.5" /> Robotics Lab
           </Button>
         </div>
-      </section>
+      </div>
 
-      {/* B. Your next step */}
+      {/* Next step */}
       {nextStage && (
-        <section aria-label="Your next step" className="surface-card border-primary/30 p-6">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="space-y-1">
-              <p className="text-xs font-medium uppercase tracking-wide text-primary">Your next step</p>
-              <h2 className="font-display text-xl font-semibold">{nextStage.title}</h2>
-              <p className="text-sm text-muted-foreground">{nextStage.desc}</p>
-            </div>
-            <Button
-              onClick={() => {
-                if (nextStage.view === "learn" && nextStage.lessonId) openLesson(nextStage.lessonId)
-                else go(nextStage.view)
-              }}
-            >
-              Go <ArrowRight aria-hidden />
-            </Button>
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3">
+          <div className="min-w-0">
+            <p className="text-xs font-medium text-primary">Next step</p>
+            <p className="truncate text-sm font-medium">{nextStage.title}</p>
           </div>
-        </section>
-      )}
-
-      {/* C. Quick access */}
-      <section aria-label="Quick access">
-        <h2 className="mb-3 font-display text-lg font-semibold">Quick access</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          {QUICK.map((q) => (
-            <button key={q.view} onClick={() => go(q.view)} className="text-left">
-              <div className="surface-card h-full space-y-2 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40">
-                <span className="grid size-8 place-items-center rounded-lg bg-primary/15 text-primary">
-                  <q.icon className="size-4" aria-hidden />
-                </span>
-                <p className="text-sm font-medium">{q.label}</p>
-              </div>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* D. Recommended for you */}
-      {recommended.length > 0 && (
-        <section aria-label="Recommended for you">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="font-display text-lg font-semibold">Recommended for you</h2>
-            <button onClick={editPrefs} className="text-xs text-primary hover:underline">
-              Adjust preferences
-            </button>
-          </div>
-          <div className="grid gap-3 md:grid-cols-3">
-            {recommended.map((l) => (
-              <button key={l.id} onClick={() => openLesson(l.id)} className="text-left">
-                <div className="surface-card h-full space-y-1.5 p-4 transition-colors hover:border-primary/40">
-                  <span className="text-[11px] capitalize text-muted-foreground">{l.difficulty} · {l.minutes} min</span>
-                  <p className="font-display font-semibold">{l.title}</p>
-                  <p className="text-sm text-muted-foreground line-clamp-2">{l.summary}</p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* E. Your progress */}
-      <section aria-label="Your progress" className="surface-card p-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-xl font-semibold">Your progress</h2>
-          <span className="font-display text-2xl font-bold text-primary">{percent}%</span>
-        </div>
-        <div className="mt-3">
-          <Progress value={percent} className="h-2" aria-label="Overall progress" />
-        </div>
-        <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {metrics.map((m) => (
-            <div key={m.label} className="rounded-lg border border-border bg-background/40 p-3">
-              <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <m.icon className="size-3.5" aria-hidden /> {m.label}
-              </dt>
-              <dd className="mt-1 font-display text-lg font-semibold">{m.value}</dd>
-            </div>
-          ))}
-        </dl>
-        {prefs.onboarded && (
-          <p className="mt-4 text-xs text-muted-foreground">
-            Learning-path stage: <span className="text-foreground">{stageIndex} of {roadmap.length}</span> planned
-            activities started.
-          </p>
-        )}
-      </section>
-
-      {/* Onboarding / tour prompt */}
-      {!prefs.onboarded ? (
-        <section className="surface-card flex flex-wrap items-center justify-between gap-4 p-6">
-          <div className="space-y-1">
-            <h2 className="font-display text-lg font-semibold">Personalize your learning path</h2>
-            <p className="text-sm text-muted-foreground">Answer a few quick questions and we'll build a roadmap for you.</p>
-          </div>
-          <div className="flex gap-3">
-            <Button onClick={editPrefs}>Set up my path</Button>
-            <Button variant="ghost" onClick={startTour}>Take the tour</Button>
-          </div>
-        </section>
-      ) : (
-        <section className="flex justify-center">
-          <Button variant="ghost" onClick={startTour}>
-            <Sparkles aria-hidden /> Take the product tour
+          <Button
+            size="sm"
+            onClick={() => {
+              if (nextStage.view === "learn" && nextStage.lessonId) openLesson(nextStage.lessonId)
+              else go(nextStage.view)
+            }}
+          >
+            Go <ArrowRight aria-hidden className="size-3.5" />
           </Button>
-        </section>
+        </div>
       )}
 
-      {/* F. Explore something new */}
-      <section aria-label="Explore something new">
-        <h2 className="mb-3 font-display text-lg font-semibold">Explore something new</h2>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {paths
-            .filter((p) => !prefs.interests.some((i) => INTEREST_OPTIONS.find((o) => o.id === i)?.pathId === p.id))
-            .slice(0, 3)
-            .map((p) => (
-              <button key={p.id} onClick={() => go("learn")} className="text-left">
-                <div className={cn("surface-card h-full space-y-1 p-4 transition-colors hover:border-primary/40")}>
-                  <span className="font-mono text-xs text-primary">Path {p.index}</span>
-                  <p className="font-medium">{p.title}</p>
-                  <p className="text-sm text-muted-foreground">{p.blurb}</p>
-                </div>
-              </button>
-            ))}
+      {/* Quick access */}
+      <div>
+        <h2 className="mb-2 text-sm font-medium text-muted-foreground">Quick access</h2>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+          {QUICK.map((q) => (
+            <button
+              key={q.view}
+              onClick={() => go(q.view)}
+              className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-left text-sm transition-colors hover:border-primary/40 hover:bg-muted/40"
+            >
+              <q.icon className="size-4 shrink-0 text-primary" aria-hidden />
+              <span className="truncate">{q.label}</span>
+            </button>
+          ))}
         </div>
-      </section>
+      </div>
+
+      {/* Recommended + Progress */}
+      <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+        {recommended.length > 0 && (
+          <div>
+            <h2 className="mb-2 text-sm font-medium text-muted-foreground">Recommended for you</h2>
+            <div className="space-y-2">
+              {recommended.map((l) => (
+                <button
+                  key={l.id}
+                  onClick={() => openLesson(l.id)}
+                  className="flex w-full items-start gap-3 rounded-lg border border-border bg-card px-3 py-2.5 text-left transition-colors hover:border-primary/40"
+                >
+                  <span
+                    className={`mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${
+                      l.difficulty === "beginner"
+                        ? "bg-sim-ok/15 text-sim-ok"
+                        : l.difficulty === "intermediate"
+                          ? "bg-sim-warn/15 text-sim-warn"
+                          : "bg-sim-danger/15 text-sim-danger"
+                    }`}
+                  >
+                    {l.difficulty}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium">{l.title}</p>
+                    <p className="truncate text-xs text-muted-foreground">{l.summary}</p>
+                  </div>
+                  <span className="shrink-0 text-xs text-muted-foreground">{l.minutes}m</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-3">
+          <div className="rounded-lg border border-border bg-card p-3">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-sm font-medium">Progress</span>
+              <span className="text-sm font-semibold text-primary">{percent}%</span>
+            </div>
+            <Progress value={percent} className="h-1.5" aria-label="Overall progress" />
+            <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
+              <span className="text-muted-foreground">
+                Lessons <span className="text-foreground">{progress.lessonsCompleted.length}/{allLessons.length}</span>
+              </span>
+              <span className="text-muted-foreground">
+                Projects <span className="text-foreground">{progress.projectsDone.length}/{projects.length}</span>
+              </span>
+              <span className="text-muted-foreground">
+                Missions <span className="text-foreground">{progress.missionsDone.length}</span>
+              </span>
+              <span className="text-muted-foreground">
+                XP <span className="text-foreground">{progress.xp}</span>
+              </span>
+            </div>
+          </div>
+
+          {!prefs.onboarded ? (
+            <div className="rounded-lg border border-border bg-card p-3">
+              <p className="text-sm font-medium">Personalize your path</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">Answer a few questions for a tailored roadmap.</p>
+              <div className="mt-2 flex gap-2">
+                <Button size="sm" onClick={editPrefs}>
+                  Set up
+                </Button>
+                <Button size="sm" variant="ghost" onClick={startTour}>
+                  Tour
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={startTour}
+              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted/40"
+            >
+              Take the product tour
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Explore */}
+      {paths.filter((p) => !prefs.interests.some((i) => INTEREST_OPTIONS.find((o) => o.id === i)?.pathId === p.id)).length > 0 && (
+        <div>
+          <h2 className="mb-2 text-sm font-medium text-muted-foreground">Explore other topics</h2>
+          <div className="grid gap-2 sm:grid-cols-3">
+            {paths
+              .filter((p) => !prefs.interests.some((i) => INTEREST_OPTIONS.find((o) => o.id === i)?.pathId === p.id))
+              .slice(0, 3)
+              .map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => go("learn")}
+                  className="rounded-lg border border-border bg-card px-3 py-2 text-left transition-colors hover:border-primary/40"
+                >
+                  <p className="text-xs font-medium text-primary">Path {p.index}</p>
+                  <p className="text-sm font-medium">{p.title}</p>
+                </button>
+              ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
