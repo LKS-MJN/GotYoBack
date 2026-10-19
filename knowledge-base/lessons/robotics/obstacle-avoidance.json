@@ -1,0 +1,122 @@
+{
+  "lesson_id": "kb-rob-obstacle",
+  "title": "Obstacle-Avoidance Logic",
+  "domain": "Robotics",
+  "topic": "Autonomous Obstacle Avoidance",
+  "difficulty": "intermediate",
+  "prerequisites": ["Ultrasonic Distance Sensing", "Differential Drive and Turning", "Arduino Digital I/O"],
+  "learning_objectives": [
+    "Explain the sense-decide-act loop in robotics",
+    "Write an obstacle-avoidance algorithm using sensor input",
+    "Use conditional logic to change robot behavior based on distance",
+    "Identify edge cases (corners, narrow passages, sensor blind spots)",
+    "Debug movement logic using an event log"
+  ],
+  "estimated_duration": 11,
+  "introduction": "Autonomous obstacle avoidance is one of the most common robot behaviors. The robot senses the environment, decides what to do, and acts. This lesson teaches you to combine an ultrasonic sensor with motor control to steer around walls.",
+  "real_world_application": "Vacuum robots, delivery robots, and autonomous vehicles all use obstacle avoidance. The same sense-decide-act pattern scales from simple toys to self-driving cars.",
+  "core_concepts": [
+    { "term": "Sense-Decide-Act", "definition": "The fundamental robot control loop: read sensors, evaluate conditions, execute actions." },
+    { "term": "Threshold", "definition": "A distance value that triggers a behavior change. E.g., stop if distance < 20 cm." },
+    { "term": "Differential Drive", "definition": "A robot with two independently controlled wheels. Turns by varying wheel speeds." },
+    { "term": "State Machine", "definition": "A system that transitions between states (forward, turn, stop) based on conditions." },
+    { "term": "Event Log", "definition": "A record of sensor readings and decisions, used for debugging." }
+  ],
+  "step_by_step_explanation": [
+    "1. Read the distance ahead using the ultrasonic sensor.",
+    "2. Compare the distance to a threshold (e.g., 20 cm).",
+    "3. If distance < threshold: stop, then turn right.",
+    "4. If distance >= threshold: move forward.",
+    "5. Repeat the loop continuously.",
+    "6. Use the event log to verify each decision.",
+    "7. Test edge cases: corners, narrow passages, moving obstacles."
+  ],
+  "important_formulas": [],
+  "components_required": ["Robot chassis with 2 DC motors", "L298N motor driver", "HC-SR04 ultrasonic sensor", "Microcontroller", "Battery pack"],
+  "wiring_instructions": "Mount the ultrasonic sensor on the front of the chassis, facing forward. Connect motor driver to microcontroller pins for direction and PWM speed. Power motors from battery through the driver.",
+  "diagram_specification": "Top-down view: robot with ultrasonic sensor facing forward, two wheels, and a caster. Obstacle ahead at variable distance.",
+  "code_examples": [
+    {
+      "language": "cpp",
+      "code": "int distance = readDistance();\n\nif (distance < 20) {\n  stopMotors();\n  turnRight();\n  delay(300);\n} else {\n  forwardMotors();\n}",
+      "explanation": "Simple sense-decide-act loop. If obstacle is close, stop and turn. Otherwise, move forward."
+    }
+  ],
+  "line_by_line_code_explanation": [
+    "readDistance() — reads ultrasonic sensor, returns cm.",
+    "distance < 20 — threshold check. 20 cm is a safe stopping distance.",
+    "stopMotors() — halts both wheels.",
+    "turnRight() — runs right wheel backward, left wheel forward (or vice versa).",
+    "delay(300) — gives time to complete the turn.",
+    "forwardMotors() — both wheels forward."
+  ],
+  "interactive_experiment": {
+    "experiment_id": "exp-obstacle-avoidance",
+    "description": "Place obstacles in a maze and run the robot. Watch it avoid walls.",
+    "adjustable_inputs": ["obstacle positions", "detection threshold (5-50 cm)", "turn direction"],
+    "state_variables": ["robot position", "heading", "distance reading", "current action"],
+    "expected_behavior": "Robot moves forward and turns when obstacle is within threshold. Reaches goal without collision."
+  },
+  "expected_observations": [
+    "Robot moves forward in open space.",
+    "Robot stops and turns when obstacle is within threshold.",
+    "Robot may get stuck in corners (needs fallback logic).",
+    "Lower threshold = robot gets closer to walls before turning.",
+    "Higher threshold = robot turns earlier, may take longer path."
+  ],
+  "common_mistakes": [
+    "Threshold too high: robot turns too early, takes inefficient path.",
+    "Threshold too low: robot hits the wall before turning.",
+    "No turn fallback: robot bounces between two walls.",
+    "Sensor mounted at an angle: readings are inaccurate.",
+    "Motors wired with wrong polarity: robot turns the wrong way."
+  ],
+  "troubleshooting_steps": [
+    "Robot hits walls: increase threshold or check sensor alignment.",
+    "Robot spins in place: threshold too high or sensor reading stuck.",
+    "Robot does not move: check motor wiring and power supply.",
+    "Robot turns wrong direction: swap motor polarity or change turn direction in code.",
+    "Robot gets stuck in corner: add a turn counter or alternate turn direction."
+  ],
+  "safety_notes": [
+    "Always test at low speed first.",
+    "Keep fingers away from wheels during operation.",
+    "Ensure battery is secured and wires are not caught in wheels.",
+    "In simulation, collisions are detected but no physical damage occurs."
+  ],
+  "knowledge_check": [
+    {
+      "question_id": "q-obstacle-01",
+      "type": "multiple_choice",
+      "question": "What should a robot do when the ultrasonic reading drops below its threshold?",
+      "options": ["Speed up", "Stop and turn to avoid the obstacle", "Ignore it", "Reverse slowly"],
+      "correct_answer": "Stop and turn to avoid the obstacle",
+      "explanation": "A close obstacle means stop and change direction to avoid a collision."
+    },
+    {
+      "question_id": "q-obstacle-02",
+      "type": "multiple_choice",
+      "question": "Why might a robot get stuck bouncing between two walls?",
+      "options": ["The motors are too fast", "No turn fallback logic", "The sensor is too accurate", "The battery is low"],
+      "correct_answer": "No turn fallback logic",
+      "explanation": "Without alternating turn directions, the robot repeats the same turn and bounces back."
+    }
+  ],
+  "mini_challenge": "Change the threshold from 20 cm to 10 cm. Predict what happens before running. Then add a left-turn fallback so the robot does not get stuck in corners.",
+  "extension_activity": "Research path planning algorithms (wall-following, maze solving) and how they build on obstacle avoidance.",
+  "related_lessons": ["sen-ultrasonic", "rob-differential", "rob-drive", "sen-ir"],
+  "further_reading": [
+    { "title": "CircuitDigest - Robotics Projects", "url": "https://circuitdigest.com/tutorials" },
+    { "title": "Last Minute Engineers - Motor Control", "url": "https://lastminuteengineers.com/" }
+  ],
+  "source_references": ["src-001", "src-002"],
+  "technical_review_status": "draft",
+  "last_reviewed": "2026-10-19",
+  "assumptions": [
+    "Flat, even surface for robot movement.",
+    "Single ultrasonic sensor facing forward.",
+    "Obstacles are large enough to reflect ultrasound.",
+    "No dynamic obstacles (moving objects)."
+  ],
+  "intended_learning_outcome": "Learner can write an obstacle-avoidance algorithm and explain the sense-decide-act pattern."
+}

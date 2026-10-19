@@ -1,0 +1,82 @@
+{
+  "version": "1.0",
+  "projects": [
+    {
+      "project_id": "proj-obstacle-robot",
+      "title": "Obstacle-Avoiding Robot",
+      "domain": "Robotics",
+      "difficulty": "intermediate",
+      "estimated_duration": 40,
+      "objective": "Build a mobile robot that drives forward and turns away from walls on its own.",
+      "components": [
+        "2-wheel robot chassis with DC motors",
+        "L298N motor driver module",
+        "HC-SR04 ultrasonic sensor",
+        "Arduino Uno or ESP32",
+        "Battery pack (6-9 V)",
+        "Breadboard and jumper wires"
+      ],
+      "prerequisites": ["Arduino GPIO", "Ultrasonic Distance Sensing", "Differential Drive and Turning"],
+      "steps": [
+        "1. Assemble the chassis and mount the motors.",
+        "2. Wire the motors to the L298N driver (Motor A and Motor B).",
+        "3. Connect the L298N control pins to the microcontroller.",
+        "4. Mount the HC-SR04 sensor on the front of the chassis.",
+        "5. Connect Trig and Echo to digital pins.",
+        "6. Write and upload the obstacle-avoidance code.",
+        "7. Test on a flat surface with obstacles.",
+        "8. Tune the threshold and turn duration."
+      ],
+      "code_template": "void loop() {\n  int d = readDistance();\n  if (d < 20) {\n    stopMotors();\n    turnRight();\n    delay(300);\n  } else {\n    forwardMotors();\n  }\n}",
+      "expected_behavior": "Robot drives forward and turns when it gets within 20 cm of an obstacle.",
+      "troubleshooting": [
+        "Robot spins in place: threshold too high or sensor reading stuck.",
+        "Motors don't move: check L298N power jumpers and ENA/ENB PWM.",
+        "Erratic readings: mount sensor away from motors.",
+        "Robot turns wrong way: swap motor polarity or change turn direction."
+      ],
+      "extension_challenges": [
+        "Add a left-turn fallback for corners.",
+        "Implement wall-following behavior.",
+        "Add a second ultrasonic sensor for wider coverage.",
+        "Log distance readings to Serial Monitor for analysis."
+      ],
+      "related_lessons": ["kb-rob-obstacle", "kb-sen-ultrasonic", "kb-rob-differential", "kb-rob-drive"],
+      "source_references": ["src-001", "src-002"],
+      "review_status": "draft"
+    },
+    {
+      "project_id": "proj-night-lamp",
+      "title": "Automatic Night Lamp",
+      "domain": "Electronics Fundamentals",
+      "difficulty": "beginner",
+      "estimated_duration": 20,
+      "objective": "Build a lamp that turns on automatically when it gets dark.",
+      "components": ["Arduino Uno or ESP32", "LDR", "10 kO resistor", "LED", "220 O resistor", "Breadboard and wires"],
+      "prerequisites": ["Ohm's Law", "LED Circuits", "Arduino GPIO"],
+      "steps": [
+        "1. Build a voltage divider with the LDR and 10 kO resistor.",
+        "2. Connect the divider output to an analog pin (A0).",
+        "3. Connect the LED to a digital pin through a 220 O resistor.",
+        "4. Write code to read the light level and control the LED.",
+        "5. Test in bright and dark conditions.",
+        "6. Adjust the threshold for your environment."
+      ],
+      "code_template": "int ldr = A0;\nint led = 9;\n\nvoid loop() {\n  int light = analogRead(ldr);\n  if (light < 300) {\n    digitalWrite(led, HIGH);\n  } else {\n    digitalWrite(led, LOW);\n  }\n  delay(200);\n}",
+      "expected_behavior": "LED turns on in darkness and off in bright light.",
+      "troubleshooting": [
+        "LED never turns on: check resistor and LED polarity.",
+        "Always on or always off: adjust the threshold value.",
+        "Flickering: add delay or average multiple readings."
+      ],
+      "extension_challenges": [
+        "Fade the LED smoothly using PWM.",
+        "Add a buzzer that beeps when light changes.",
+        "Log light readings to Serial Monitor."
+      ],
+      "related_lessons": ["kb-elec-ohm", "kb-elec-led", "kb-ard-gpio", "kb-sen-light"],
+      "source_references": ["src-001", "src-003"],
+      "review_status": "draft"
+    }
+  ]
+}

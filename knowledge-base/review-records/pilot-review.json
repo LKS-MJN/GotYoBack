@@ -1,0 +1,86 @@
+{
+  "version": "1.0",
+  "review_records": [
+    {
+      "item_id": "kb-elec-ohm",
+      "item_type": "lesson",
+      "title": "Ohm's Law: Voltage, Current, and Resistance",
+      "review_status": "draft",
+      "reviewer": null,
+      "review_date": null,
+      "notes": "Initial draft. Needs technical verification of formulas and examples.",
+      "safety_checked": false,
+      "accessibility_checked": false
+    },
+    {
+      "item_id": "kb-elec-led",
+      "item_type": "lesson",
+      "title": "LEDs and Current-Limiting Resistors",
+      "review_status": "draft",
+      "reviewer": null,
+      "review_date": null,
+      "notes": "Initial draft. LED forward voltage values need verification per color.",
+      "safety_checked": false,
+      "accessibility_checked": false
+    },
+    {
+      "item_id": "kb-ard-gpio",
+      "item_type": "lesson",
+      "title": "Digital Input and Output with Arduino",
+      "review_status": "draft",
+      "reviewer": null,
+      "review_date": null,
+      "notes": "Initial draft. Code examples need testing on actual Arduino Uno.",
+      "safety_checked": false,
+      "accessibility_checked": false
+    },
+    {
+      "item_id": "kb-sen-ultrasonic",
+      "item_type": "lesson",
+      "title": "Ultrasonic Distance Sensor (HC-SR04)",
+      "review_status": "draft",
+      "reviewer": null,
+      "review_date": null,
+      "notes": "Initial draft. Distance formula (divide by 58) verified against standard references.",
+      "safety_checked": false,
+      "accessibility_checked": false
+    },
+    {
+      "item_id": "kb-rob-obstacle",
+      "item_type": "lesson",
+      "title": "Obstacle-Avoidance Logic",
+      "review_status": "draft",
+      "reviewer": null,
+      "review_date": null,
+      "notes": "Initial draft. Algorithm logic needs testing in simulator.",
+      "safety_checked": false,
+      "accessibility_checked": false
+    },
+    {
+      "item_id": "kb-iot-esp32-basics",
+      "item_type": "lesson",
+      "title": "ESP32 IoT Basics: Sensors, Wi-Fi, and Dashboards",
+      "review_status": "draft",
+      "reviewer": null,
+      "review_date": null,
+      "notes": "Initial draft. Wi-Fi code needs testing on actual ESP32 hardware.",
+      "safety_checked": false,
+      "accessibility_checked": false
+    }
+  ],
+  "review_workflow": {
+    "statuses": ["draft", "generated", "awaiting_review", "technically_verified", "published", "needs_revision"],
+    "required_checks": [
+      "Factual accuracy",
+      "Correct formulas and units",
+      "Code syntax",
+      "Board compatibility",
+      "Pin compatibility",
+      "Voltage and current limitations",
+      "Correct answer keys",
+      "Source and license compliance",
+      "Clear distinction between simulated and real behavior",
+      "Accessibility and beginner comprehension"
+    ]
+  }
+}

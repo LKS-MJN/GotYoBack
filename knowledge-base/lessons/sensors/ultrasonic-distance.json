@@ -1,0 +1,123 @@
+{
+  "lesson_id": "kb-sen-ultrasonic",
+  "title": "Ultrasonic Distance Sensor (HC-SR04)",
+  "domain": "Sensors and Actuators",
+  "topic": "Ultrasonic Distance Measurement",
+  "difficulty": "intermediate",
+  "prerequisites": ["Arduino GPIO", "Digital I/O", "Basic timing concepts"],
+  "learning_objectives": [
+    "Explain how an ultrasonic sensor measures distance",
+    "Calculate distance from echo time using the speed of sound",
+    "Wire an HC-SR04 to an Arduino",
+    "Write Arduino code to read distance",
+    "Identify common measurement errors and limitations"
+  ],
+  "estimated_duration": 10,
+  "introduction": "The HC-SR04 ultrasonic sensor measures distance by emitting a sound pulse and timing its echo. It is one of the most common sensors in robotics, used for obstacle detection, distance measurement, and navigation.",
+  "real_world_application": "Obstacle-avoiding robots, parking sensors, liquid level measurement, and distance monitoring all use ultrasonic sensing. The HC-SR04 is affordable and easy to interface with microcontrollers.",
+  "core_concepts": [
+    { "term": "Ultrasonic", "definition": "Sound waves with frequency above human hearing (typically 40 kHz for the HC-SR04)." },
+    { "term": "Time of Flight", "definition": "The time it takes for a sound pulse to travel to an object and back." },
+    { "term": "Echo", "definition": "The reflected sound pulse detected by the sensor's receiver." },
+    { "term": "Speed of Sound", "definition": "Approximately 343 m/s in air at 20°C. Used to convert time to distance." },
+    { "term": "Trigger Pin", "definition": "Input pin that starts the measurement. Requires a 10 µs HIGH pulse." },
+    { "term": "Echo Pin", "definition": "Output pin that goes HIGH for the duration of the echo return time." }
+  ],
+  "step_by_step_explanation": [
+    "1. Connect VCC to 5 V, GND to ground, Trig to a digital output pin, Echo to a digital input pin.",
+    "2. In code: set Trig LOW, wait 2 µs, set Trig HIGH for 10 µs, then set Trig LOW.",
+    "3. The sensor emits 8 ultrasonic pulses at 40 kHz.",
+    "4. The Echo pin goes HIGH when the pulse is emitted and LOW when the echo returns.",
+    "5. Measure the HIGH duration of the Echo pin using pulseIn().",
+    "6. Calculate distance: distance (cm) = echo_time (µs) / 58.",
+    "7. The division by 58 accounts for round-trip time and speed of sound (343 m/s ˜ 1/29.1 µs per cm, times 2 for round trip ˜ 58)."
+  ],
+  "important_formulas": [
+    { "name": "Distance from echo time", "formula": "distance (cm) = echo_time (µs) / 58", "variables": "echo_time = pulseIn duration in microseconds" },
+    { "name": "Speed of sound", "formula": "v ˜ 343 m/s at 20°C", "variables": "v = speed of sound in air" }
+  ],
+  "components_required": ["HC-SR04 ultrasonic sensor", "Arduino Uno", "Breadboard", "Jumper wires"],
+  "wiring_instructions": "VCC ? 5 V, GND ? GND, Trig ? digital pin 9, Echo ? digital pin 10. Keep the sensor away from motors to reduce vibration noise.",
+  "diagram_specification": "Arduino Uno connected to HC-SR04: Trig to pin 9, Echo to pin 10, VCC to 5 V, GND to GND.",
+  "code_examples": [
+    {
+      "language": "cpp",
+      "code": "const int trigPin = 9;\nconst int echoPin = 10;\n\nvoid setup() {\n  pinMode(trigPin, OUTPUT);\n  pinMode(echoPin, INPUT);\n  Serial.begin(9600);\n}\n\nvoid loop() {\n  digitalWrite(trigPin, LOW);\n  delayMicroseconds(2);\n  digitalWrite(trigPin, HIGH);\n  delayMicroseconds(10);\n  digitalWrite(trigPin, LOW);\n\n  long duration = pulseIn(echoPin, HIGH);\n  long distance = duration / 58;\n\n  Serial.print(\"Distance: \");\n  Serial.print(distance);\n  Serial.println(\" cm\");\n  delay(100);\n}",
+      "explanation": "A 10 µs trigger pulse starts the chirp. pulseIn() measures the echo duration. Division by 58 converts to centimeters."
+    }
+  ],
+  "line_by_line_code_explanation": [
+    "pinMode(trigPin, OUTPUT) — Trig is an output (we trigger the sensor).",
+    "pinMode(echoPin, INPUT) — Echo is an input (sensor tells us the time).",
+    "digitalWrite(trigPin, LOW/HIGH) — sends the trigger pulse.",
+    "delayMicroseconds(2/10) — timing for the trigger pulse.",
+    "pulseIn(echoPin, HIGH) — measures how long Echo stays HIGH.",
+    "duration / 58 — converts microseconds to centimeters (round-trip accounted for)."
+  ],
+  "interactive_experiment": {
+    "experiment_id": "exp-ultrasonic",
+    "description": "Move a virtual object and watch the measured distance update.",
+    "adjustable_inputs": ["object distance (2-400 cm)"],
+    "state_variables": ["measured distance", "echo time"],
+    "expected_behavior": "Measured distance matches object position. Below 2 cm or above 400 cm, readings become unreliable."
+  },
+  "expected_observations": [
+    "Distance reading increases as the object moves away.",
+    "Distance reading decreases as the object moves closer.",
+    "Below 2 cm, the sensor cannot measure (too close).",
+    "Above 400 cm, the echo may not return (out of range)."
+  ],
+  "common_mistakes": [
+    "Forgetting the 10 µs trigger pulse (sensor does not fire).",
+    "Using the wrong pin for Trig vs Echo.",
+    "Not waiting between measurements (echo from previous pulse may interfere).",
+    "Ignoring the minimum distance (2 cm) and maximum range (400 cm).",
+    "Mounting the sensor near motors (vibration causes noise)."
+  ],
+  "troubleshooting_steps": [
+    "No reading (0 or very large): check wiring, check trigger pulse timing.",
+    "Erratic readings: add a small delay between measurements, check for interference.",
+    "Always reading 0: Echo pin may not be connected or may be on a non-interrupt-capable pin (if using interrupts).",
+    "Readings too high: object may be beyond range or at an angle."
+  ],
+  "safety_notes": [
+    "The HC-SR04 operates at 5 V. Ensure your microcontroller supports 5 V inputs.",
+    "Do not point the sensor at people's ears at close range (ultrasonic can be uncomfortable).",
+    "In simulation, readings are idealized; real sensors have noise and angular limitations."
+  ],
+  "knowledge_check": [
+    {
+      "question_id": "q-ultra-01",
+      "type": "multiple_choice",
+      "question": "Why do we divide the echo time by two when computing distance?",
+      "options": ["Because the sound travels to the object and back", "To convert microseconds to seconds", "Because sound loses half its energy", "To account for sensor delay"],
+      "correct_answer": "Because the sound travels to the object and back",
+      "explanation": "The measured time covers the trip out and the return, so the one-way distance is half."
+    },
+    {
+      "question_id": "q-ultra-02",
+      "type": "calculation",
+      "question": "If pulseIn() returns 1160 µs, what is the distance in cm?",
+      "options": ["10 cm", "20 cm", "58 cm", "116 cm"],
+      "correct_answer": "20 cm",
+      "explanation": "distance = 1160 / 58 = 20 cm."
+    }
+  ],
+  "mini_challenge": "Modify the code to stop a motor when an obstacle is within 20 cm. Add a serial print showing 'OBSTACLE' when detected.",
+  "extension_activity": "Research how to use two ultrasonic sensors for wider coverage and how to average readings to reduce noise.",
+  "related_lessons": ["sen-ir", "rob-obstacle", "ard-digital"],
+  "further_reading": [
+    { "title": "Arduino - pulseIn()", "url": "https://docs.arduino.cc/language-reference/" },
+    { "title": "CircuitDigest - Ultrasonic Sensor", "url": "https://circuitdigest.com/tutorials" }
+  ],
+  "source_references": ["src-001", "src-002", "src-003"],
+  "technical_review_status": "draft",
+  "last_reviewed": "2026-10-19",
+  "assumptions": [
+    "Speed of sound = 343 m/s (at ~20°C, sea level).",
+    "Ideal reflection (object perpendicular to sensor).",
+    "No temperature or humidity effects on speed of sound.",
+    "Single object in the sensor's cone."
+  ],
+  "intended_learning_outcome": "Learner can wire an HC-SR04, read distance in code, and explain the time-of-flight principle."
+}

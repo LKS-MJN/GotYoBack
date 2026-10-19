@@ -1,0 +1,103 @@
+{
+  "lesson_id": "kb-elec-led",
+  "title": "LEDs and Current-Limiting Resistors",
+  "domain": "Electronics Fundamentals",
+  "topic": "LED Circuits",
+  "difficulty": "beginner",
+  "prerequisites": ["Ohm's Law", "Series circuits"],
+  "learning_objectives": [
+    "Explain why an LED needs a current-limiting resistor",
+    "Calculate the correct resistor value for a given LED and supply voltage",
+    "Identify LED polarity (anode and cathode)",
+    "Recognize the effect of too much or too little current on an LED"
+  ],
+  "estimated_duration": 6,
+  "introduction": "An LED is one of the most common components in electronics. It lights up when current flows through it in the correct direction. But LEDs have almost no internal resistance once they start conducting, so without a limit they draw too much current and burn out. A series resistor sets a safe current.",
+  "real_world_application": "Every indicator light, status LED, and display backlight uses this principle. Understanding current limiting is essential for any electronics project.",
+  "core_concepts": [
+    { "term": "LED (Light Emitting Diode)", "definition": "A diode that emits light when forward biased. Has a forward voltage drop (typically 2 V for red, 3 V for blue/white)." },
+    { "term": "Forward Voltage (Vf)", "definition": "The voltage drop across the LED when it conducts. Varies by color and material." },
+    { "term": "Current Limiting", "definition": "Using a series resistor to cap the current through the LED to a safe value (typically 10-20 mA)." },
+    { "term": "Anode / Cathode", "definition": "The positive (anode) and negative (cathode) terminals of the LED. Current flows from anode to cathode." }
+  ],
+  "step_by_step_explanation": [
+    "1. Identify the supply voltage (Vsupply) and LED forward voltage (Vf).",
+    "2. Calculate the voltage across the resistor: Vr = Vsupply - Vf.",
+    "3. Choose a target LED current (Iled), typically 10-20 mA.",
+    "4. Calculate resistance: R = Vr / Iled.",
+    "5. Select the nearest standard resistor value.",
+    "6. Verify the actual current is within the safe range."
+  ],
+  "important_formulas": [
+    { "name": "Resistor voltage", "formula": "Vr = Vsupply - Vf", "variables": "Vr = resistor voltage, Vsupply = supply voltage, Vf = LED forward voltage" },
+    { "name": "Resistor value", "formula": "R = (Vsupply - Vf) / Iled", "variables": "R = ohms, Vsupply = volts, Vf = volts, Iled = amperes" }
+  ],
+  "components_required": ["LED", "Resistor (calculated value)", "Power supply", "Breadboard", "Jumper wires"],
+  "wiring_instructions": "Connect the resistor in series with the LED. The resistor can go on either side. Connect the anode (long leg) toward the positive supply. Connect the cathode (short leg) toward ground.",
+  "diagram_specification": "A series circuit: power supply positive ? resistor ? LED anode ? LED cathode ? power supply negative (ground).",
+  "code_examples": [],
+  "line_by_line_code_explanation": [],
+  "interactive_experiment": {
+    "experiment_id": "exp-led-circuit",
+    "description": "Adjust supply voltage and resistor value to see the calculated LED current.",
+    "adjustable_inputs": ["supply voltage (3-12 V)", "series resistance (100-1000 O)", "LED forward voltage (1.8-3.3 V)"],
+    "calculated_output": "current = (Vsupply - Vf) / R",
+    "expected_behavior": "Higher resistance reduces current. Higher supply voltage increases current."
+  },
+  "expected_observations": [
+    "With 5 V supply, 2 V LED, and 150 O resistor: current ˜ 20 mA (safe).",
+    "Without a resistor: current is limited only by the LED's tiny internal resistance, causing damage.",
+    "Increasing resistance dims the LED; decreasing resistance brightens it (up to the safe limit)."
+  ],
+  "common_mistakes": [
+    "Connecting the LED without a resistor (burns out quickly).",
+    "Reversing LED polarity (LED does not light; usually not damaged).",
+    "Using too low a resistance, causing excessive current.",
+    "Forgetting to account for the LED's forward voltage drop."
+  ],
+  "troubleshooting_steps": [
+    "LED does not light: check polarity, check resistor value, check power supply.",
+    "LED is very dim: resistance may be too high; reduce it slightly.",
+    "LED burns out quickly: resistance too low or missing; increase resistance.",
+    "LED flickers: loose connection or insufficient power supply current."
+  ],
+  "safety_notes": [
+    "Always use a current-limiting resistor with an LED.",
+    "Do not exceed the LED's maximum current rating (check datasheet, typically 20-30 mA).",
+    "In simulation, high current values are flagged but no physical damage occurs."
+  ],
+  "knowledge_check": [
+    {
+      "question_id": "q-led-01",
+      "type": "multiple_choice",
+      "question": "Why is a resistor placed in series with an LED?",
+      "options": ["To limit the current to a safe value", "To increase brightness", "To change the LED color", "To store energy"],
+      "correct_answer": "To limit the current to a safe value",
+      "explanation": "The resistor drops excess voltage and caps current so the LED is not destroyed."
+    },
+    {
+      "question_id": "q-led-02",
+      "type": "calculation",
+      "question": "Calculate the resistor needed for a 5 V supply, 2 V LED, and 20 mA target current.",
+      "options": ["100 O", "150 O", "220 O", "330 O"],
+      "correct_answer": "150 O",
+      "explanation": "R = (5 - 2) / 0.02 = 150 O."
+    }
+  ],
+  "mini_challenge": "Change the supply voltage from 5 V to 9 V. What resistor value is needed to maintain 20 mA? (Assume 2 V LED drop.)",
+  "extension_activity": "Research how PWM can be used to dim an LED and how this relates to analog output.",
+  "related_lessons": ["elec-ohm", "elec-series-parallel", "ard-digital", "ard-analog"],
+  "further_reading": [
+    { "title": "Arduino - Digital I/O", "url": "https://docs.arduino.cc/learn" },
+    { "title": "CircuitDigest - LED Tutorials", "url": "https://circuitdigest.com/tutorials" }
+  ],
+  "source_references": ["src-001", "src-003", "src-007"],
+  "technical_review_status": "draft",
+  "last_reviewed": "2026-10-19",
+  "assumptions": [
+    "Ideal LED with constant forward voltage.",
+    "No temperature effects on LED behavior.",
+    "Resistor tolerance ignored."
+  ],
+  "intended_learning_outcome": "Learner can calculate a current-limiting resistor value and explain why it is required for safe LED operation."
+}

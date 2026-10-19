@@ -1,0 +1,126 @@
+{
+  "lesson_id": "kb-iot-esp32-basics",
+  "title": "ESP32 IoT Basics: Sensors, Wi-Fi, and Dashboards",
+  "domain": "Internet of Things",
+  "topic": "ESP32 IoT Fundamentals",
+  "difficulty": "intermediate",
+  "prerequisites": ["Arduino GPIO", "Wi-Fi basics", "Sensors (temperature, humidity)"],
+  "learning_objectives": [
+    "Explain IoT architecture (sensor, controller, network, dashboard)",
+    "Connect an ESP32 to Wi-Fi in station mode",
+    "Read a sensor and serve the value over HTTP",
+    "Understand MQTT publish/subscribe concepts",
+    "Identify security and privacy considerations for IoT devices"
+  ],
+  "estimated_duration": 15,
+  "introduction": "The Internet of Things connects physical devices to a network so their data can be monitored and acted on remotely. An ESP32 microcontroller with built-in Wi-Fi can read sensors and serve data to a browser dashboard — turning a phone or laptop into a remote display.",
+  "real_world_application": "Smart homes, environmental monitoring, industrial automation, and wearable devices all use IoT. An ESP32 sensor node can report temperature, humidity, or air quality to a dashboard anywhere on the network.",
+  "core_concepts": [
+    { "term": "IoT (Internet of Things)", "definition": "A network of physical devices that collect and exchange data over the internet or local network." },
+    { "term": "Sensor Node", "definition": "A device that measures physical quantities and transmits data." },
+    { "term": "Gateway", "definition": "A device that connects sensor nodes to the internet or cloud." },
+    { "term": "Wi-Fi Station Mode", "definition": "The ESP32 connects to an existing Wi-Fi network as a client." },
+    { "term": "Access Point Mode", "definition": "The ESP32 creates its own Wi-Fi network for direct device connection." },
+    { "term": "HTTP", "definition": "HyperText Transfer Protocol — how browsers request and receive web pages." },
+    { "term": "MQTT", "definition": "Message Queuing Telemetry Transport — a lightweight publish/subscribe messaging protocol for IoT." },
+    { "term": "Dashboard", "definition": "A web interface that displays sensor data and device status." }
+  ],
+  "step_by_step_explanation": [
+    "1. Connect the ESP32 to your computer via USB.",
+    "2. Write code to connect to Wi-Fi using WiFi.begin(ssid, password).",
+    "3. Wait for connection: while (WiFi.status() != WL_CONNECTED) delay.",
+    "4. Read sensor data (e.g., DHT11 temperature/humidity).",
+    "5. Create a WiFiServer on port 80.",
+    "6. In loop(): check for client connections, read sensor, respond with HTML.",
+    "7. Open the ESP32's IP address in a browser to see the dashboard.",
+    "8. For MQTT: connect to a broker, publish sensor data to a topic, subscribe to control topics."
+  ],
+  "important_formulas": [],
+  "components_required": ["ESP32 development board", "DHT11 sensor", "Breadboard", "Jumper wires", "Wi-Fi network (2.4 GHz)"],
+  "wiring_instructions": "Connect DHT11 data pin to an ESP32 GPIO (e.g., pin 4). Connect VCC to 3.3 V, GND to GND. Add a 10 kO pull-up resistor on the data line if not built into the module.",
+  "diagram_specification": "ESP32 connected to DHT11 sensor. ESP32 connected to Wi-Fi router. Browser on laptop/phone accesses ESP32 IP address.",
+  "code_examples": [
+    {
+      "language": "cpp",
+      "code": "#include <WiFi.h>\n#include <DHT.h>\n\nconst char* ssid = \"YOUR_WIFI\";\nconst char* pass = \"YOUR_PASS\";\nDHT dht(4, DHT11);\nWiFiServer server(80);\n\nvoid setup() {\n  Serial.begin(115200);\n  dht.begin();\n  WiFi.begin(ssid, pass);\n  while (WiFi.status() != WL_CONNECTED) { delay(250); }\n  Serial.println(WiFi.localIP());\n  server.begin();\n}\n\nvoid loop() {\n  WiFiClient client = server.available();\n  if (client) {\n    float t = dht.readTemperature();\n    float h = dht.readHumidity();\n    client.println(\"HTTP/1.1 200 OK\");\n    client.println(\"Content-Type: text/html\");\n    client.println();\n    client.println(\"<h1>Temp: \" + String(t) + \" C</h1>\");\n    client.println(\"<h1>Humidity: \" + String(h) + \" %</h1>\");\n    client.stop();\n  }\n  delay(2000);\n}",
+      "explanation": "ESP32 joins Wi-Fi, reads DHT11, and serves an HTML page with the latest values to any connected browser."
+    }
+  ],
+  "line_by_line_code_explanation": [
+    "WiFi.begin(ssid, pass) — connects to the Wi-Fi network.",
+    "while (WiFi.status() != WL_CONNECTED) — waits until connected.",
+    "WiFi.localIP() — prints the assigned IP address to Serial Monitor.",
+    "server.begin() — starts the web server on port 80.",
+    "server.available() — checks for incoming client connections.",
+    "dht.readTemperature() / readHumidity() — reads sensor values.",
+    "client.println() — sends HTTP response to the browser.",
+    "client.stop() — closes the connection."
+  ],
+  "interactive_experiment": {
+    "experiment_id": "exp-iot-dashboard",
+    "description": "Simulate sensor data flowing from an ESP32 to a dashboard.",
+    "adjustable_inputs": ["temperature", "humidity", "connection state"],
+    "state_variables": ["sensor readings", "device status", "dashboard display"],
+    "expected_behavior": "Changing sensor values updates the dashboard display. Connection state affects data flow."
+  },
+  "expected_observations": [
+    "ESP32 connects to Wi-Fi and gets an IP address.",
+    "Browser can access the IP address and see sensor values.",
+    "Values update when the page is refreshed.",
+    "If Wi-Fi disconnects, the dashboard shows stale or no data."
+  ],
+  "common_mistakes": [
+    "Using 5 GHz Wi-Fi (ESP32 only supports 2.4 GHz).",
+    "Wrong SSID or password (connection fails silently).",
+    "Not checking WiFi.status() before starting the server.",
+    "Reading sensor too frequently (DHT11 needs 2 s between reads).",
+    "Not closing the client connection (causes memory leaks)."
+  ],
+  "troubleshooting_steps": [
+    "Cannot connect to Wi-Fi: verify SSID/password, ensure 2.4 GHz network.",
+    "Page won't load: find the IP address in Serial Monitor, ensure same network.",
+    "NaN readings: check sensor wiring, add pull-up resistor, wait 2 s after power-on.",
+    "Connection drops: check power supply stability, add decoupling capacitor."
+  ],
+  "safety_notes": [
+    "Do not expose IoT devices to the public internet without authentication.",
+    "Use strong Wi-Fi passwords and consider WPA2/WPA3.",
+    "Do not transmit sensitive data without encryption (HTTPS/TLS).",
+    "In simulation, no real network or cloud is used."
+  ],
+  "knowledge_check": [
+    {
+      "question_id": "q-iot-01",
+      "type": "multiple_choice",
+      "question": "Which component decides what to do with a sensor reading in an IoT system?",
+      "options": ["The actuator", "The controller", "The power supply"],
+      "correct_answer": "The controller",
+      "explanation": "The controller (e.g., ESP32) runs the logic that turns readings into decisions."
+    },
+    {
+      "question_id": "q-iot-02",
+      "type": "multiple_choice",
+      "question": "What does MQTT use to route messages between devices?",
+      "options": ["The broker", "The sensor", "The motor driver"],
+      "correct_answer": "The broker",
+      "explanation": "A broker sits in the middle and forwards messages matching each topic."
+    }
+  ],
+  "mini_challenge": "Add a second sensor (light sensor) to the dashboard. Update the HTML to show both readings.",
+  "extension_activity": "Research MQTT and how to use a broker (like Mosquitto) to connect multiple ESP32 devices.",
+  "related_lessons": ["esp-intro", "esp-wifi", "iot-intro", "iot-mqtt", "sen-temp"],
+  "further_reading": [
+    { "title": "ESP-IDF Wi-Fi API", "url": "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/" },
+    { "title": "Wokwi ESP32 Guide", "url": "https://docs.wokwi.com/guides/esp32" }
+  ],
+  "source_references": ["src-004", "src-005"],
+  "technical_review_status": "draft",
+  "last_reviewed": "2026-10-19",
+  "assumptions": [
+    "ESP32 with Arduino framework (not ESP-IDF native).",
+    "2.4 GHz Wi-Fi network available.",
+    "DHT11 sensor with built-in pull-up or external 10 kO resistor.",
+    "Single client connection at a time (simple server)."
+  ],
+  "intended_learning_outcome": "Learner can connect an ESP32 to Wi-Fi, read a sensor, and serve data to a browser dashboard."
+}

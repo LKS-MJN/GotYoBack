@@ -1,0 +1,125 @@
+{
+  "version": "1.0",
+  "sources": [
+    {
+      "id": "src-001",
+      "name": "CircuitDigest",
+      "url": "https://circuitdigest.com/",
+      "type": "website",
+      "topics": ["electronics fundamentals", "circuit design", "Arduino projects", "sensors", "IoT"],
+      "license": "Copyright (all rights reserved). Used as reference only.",
+      "access_date": "2026-10-19",
+      "usage": "Topic discovery and verification. Original explanations written; no verbatim copying."
+    },
+    {
+      "id": "src-002",
+      "name": "Last Minute Engineers",
+      "url": "https://lastminuteengineers.com/",
+      "type": "website",
+      "topics": ["Arduino tutorials", "ESP32", "ESP8266", "sensor interfacing", "motor control", "IoT"],
+      "license": "Copyright (all rights reserved). Used as reference only.",
+      "access_date": "2026-10-19",
+      "usage": "Topic discovery and verification. Original explanations written; no verbatim copying."
+    },
+    {
+      "id": "src-003",
+      "name": "Arduino Official Documentation",
+      "url": "https://docs.arduino.cc/",
+      "type": "official_docs",
+      "topics": ["language reference", "board guides", "digital/analog I/O", "PWM", "serial communication"],
+      "license": "Arduino documentation license. Used for verification.",
+      "access_date": "2026-10-19",
+      "usage": "Verify pin behavior, function signatures, and board-specific capabilities."
+    },
+    {
+      "id": "src-004",
+      "name": "Espressif ESP-IDF Programming Guide",
+      "url": "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/",
+      "type": "official_docs",
+      "topics": ["ESP32 architecture", "GPIO", "Wi-Fi", "Bluetooth", "networking", "power management"],
+      "license": "Espressif documentation. Used for verification.",
+      "access_date": "2026-10-19",
+      "usage": "Verify ESP32 pin capabilities, Wi-Fi modes, and framework differences."
+    },
+    {
+      "id": "src-005",
+      "name": "Wokwi ESP32 Simulation Guide",
+      "url": "https://docs.wokwi.com/guides/esp32",
+      "type": "official_docs",
+      "topics": ["ESP32 simulation", "Wokwi", "virtual hardware"],
+      "license": "Wokwi documentation. Used for verification.",
+      "access_date": "2026-10-19",
+      "usage": "Verify simulation capabilities and supported ESP32 features."
+    },
+    {
+      "id": "src-006",
+      "name": "Raspberry Pi Learning Resources",
+      "url": "https://www.raspberrypi.com/resources/learn/",
+      "type": "educational_resource",
+      "topics": ["physical computing", "basic electronics", "input/output", "sensor activities"],
+      "license": "Raspberry Pi Foundation. Used for pedagogical reference.",
+      "access_date": "2026-10-19",
+      "usage": "Pedagogical reference for beginner-friendly experiment design."
+    },
+    {
+      "id": "src-007",
+      "name": "Make: Electronics (Charles Platt)",
+      "url": "https://www.makershed.com/products/make-electronics-2nd-edition",
+      "type": "book",
+      "topics": ["electronic components", "voltage", "current", "resistance", "circuits", "LEDs", "switches"],
+      "license": "Copyright. Used for topic planning and teaching approach reference.",
+      "access_date": "2026-10-19",
+      "usage": "Topic planning and hands-on experiment design. No verbatim reproduction."
+    },
+    {
+      "id": "src-008",
+      "name": "Arduino Workshop (John Boxall)",
+      "url": "https://nostarch.com/arduino",
+      "type": "book",
+      "topics": ["Arduino fundamentals", "inputs", "outputs", "sensors", "actuators", "projects"],
+      "license": "Copyright. Used for curriculum planning.",
+      "access_date": "2026-10-19",
+      "usage": "Curriculum planning and project structure reference. No verbatim reproduction."
+    },
+    {
+      "id": "src-009",
+      "name": "Practical Electronics for Inventors (Scherz & Monk)",
+      "url": "https://www.mhprofessional.com/9781259587542-usa-practical-electronics-for-inventors-fourth-edition-group",
+      "type": "book",
+      "topics": ["electronic principles", "semiconductors", "circuit analysis", "analog/digital", "troubleshooting"],
+      "license": "Copyright. Used as deeper technical reference.",
+      "access_date": "2026-10-19",
+      "usage": "Technical reference for component behavior and circuit analysis. No verbatim reproduction."
+    },
+    {
+      "id": "src-010",
+      "name": "Wokwi Elements (GitHub)",
+      "url": "https://github.com/wokwi/wokwi-elements",
+      "type": "open_source_repo",
+      "topics": ["simulator components", "visual electronic parts", "web components"],
+      "license": "MIT. Inspect license before reuse.",
+      "access_date": "2026-10-19",
+      "usage": "Reference for simulator component visual design and interaction patterns."
+    },
+    {
+      "id": "src-011",
+      "name": "AVR8js (GitHub)",
+      "url": "https://github.com/wokwi/avr8js",
+      "type": "open_source_repo",
+      "topics": ["AVR simulation", "microcontroller emulation", "code execution"],
+      "license": "MIT. Inspect license before reuse.",
+      "access_date": "2026-10-19",
+      "usage": "Reference for microcontroller simulation architecture."
+    },
+    {
+      "id": "src-012",
+      "name": "ProtoBot (GitHub)",
+      "url": "https://github.com/microbotsio/ProtoBot",
+      "type": "open_source_repo",
+      "topics": ["educational robot", "motor control", "sensors", "firmware"],
+      "license": "Check repository license before reuse.",
+      "access_date": "2026-10-19",
+      "usage": "Reference for educational robot hardware and firmware structure."
+    }
+  ]
+}

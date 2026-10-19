@@ -1,0 +1,117 @@
+{
+  "lesson_id": "kb-elec-ohm",
+  "title": "Ohm's Law: Voltage, Current, and Resistance",
+  "domain": "Electronics Fundamentals",
+  "topic": "Ohm's Law",
+  "difficulty": "beginner",
+  "prerequisites": ["Basic arithmetic", "Concept of electrical charge"],
+  "learning_objectives": [
+    "Define voltage, current, and resistance and their units",
+    "State Ohm's Law and rearrange it to solve for any one quantity",
+    "Calculate current, voltage, or resistance given the other two",
+    "Explain what happens to current when voltage or resistance changes",
+    "Recognize safe and unsafe current values for small components"
+  ],
+  "estimated_duration": 8,
+  "introduction": "Every circuit you build is governed by one simple relationship: Ohm's Law. It connects the three quantities you will measure most often — voltage, current, and resistance — and lets you predict how a circuit will behave before you power it on.",
+  "real_world_application": "When you power an LED from a 5 V supply, you need a resistor to limit the current. Ohm's Law tells you exactly which resistor value keeps the LED safe. Without it, you would guess and risk burning the component.",
+  "core_concepts": [
+    {
+      "term": "Voltage (V)",
+      "definition": "The electrical pressure that pushes charge through a circuit. Measured in volts (V)."
+    },
+    {
+      "term": "Current (I)",
+      "definition": "The rate at which charge flows. Measured in amperes (A), often milliamps (mA)."
+    },
+    {
+      "term": "Resistance (R)",
+      "definition": "The opposition to current flow. Measured in ohms (O)."
+    },
+    {
+      "term": "Ohm's Law",
+      "definition": "V = I × R. Voltage equals current multiplied by resistance."
+    }
+  ],
+  "step_by_step_explanation": [
+    "1. Identify the three quantities: voltage (V), current (I), and resistance (R).",
+    "2. Write Ohm's Law: V = I × R.",
+    "3. To find current: I = V / R.",
+    "4. To find resistance: R = V / I.",
+    "5. Substitute known values and calculate.",
+    "6. Check the result against safe operating ranges for your components."
+  ],
+  "important_formulas": [
+    { "name": "Ohm's Law", "formula": "V = I × R", "variables": "V = volts, I = amperes, R = ohms" },
+    { "name": "Current", "formula": "I = V / R", "variables": "I = amperes, V = volts, R = ohms" },
+    { "name": "Resistance", "formula": "R = V / I", "variables": "R = ohms, V = volts, I = amperes" }
+  ],
+  "components_required": [],
+  "wiring_instructions": "No physical wiring required for this lesson. The interactive experiment uses a simulated circuit.",
+  "diagram_specification": "A simple circuit diagram showing a voltage source connected across a resistor, with labels for V, I, and R.",
+  "code_examples": [],
+  "line_by_line_code_explanation": [],
+  "interactive_experiment": {
+    "experiment_id": "exp-ohms-law",
+    "description": "Adjust voltage and resistance sliders to see the calculated current update in real time.",
+    "adjustable_inputs": ["voltage (0-12 V)", "resistance (10-1000 O)"],
+    "calculated_output": "current = voltage / resistance",
+    "expected_behavior": "Increasing voltage increases current. Increasing resistance decreases current."
+  },
+  "expected_observations": [
+    "Current increases when voltage increases (at fixed resistance).",
+    "Current decreases when resistance increases (at fixed voltage).",
+    "Doubling voltage doubles current (at fixed resistance).",
+    "Doubling resistance halves current (at fixed voltage)."
+  ],
+  "common_mistakes": [
+    "Confusing voltage and current — voltage is the push, current is the flow.",
+    "Forgetting that current depends on both voltage AND resistance.",
+    "Using ohms when the value is in kiloohms without converting.",
+    "Assuming a resistor alone sets current without considering the supply voltage."
+  ],
+  "troubleshooting_steps": [
+    "If current seems too high: check that resistance is not too low.",
+    "If current seems too low: check that voltage is applied and resistance is not too high.",
+    "Verify units: V in volts, R in ohms, I in amperes (not milliamps)."
+  ],
+  "safety_notes": [
+    "In real circuits, always check component current ratings before applying power.",
+    "Small LEDs typically need 10-20 mA. Exceeding this can damage the LED.",
+    "Resistors have power ratings (e.g., 1/4 W). Exceeding this can cause overheating."
+  ],
+  "knowledge_check": [
+    {
+      "question_id": "q-ohm-01",
+      "type": "multiple_choice",
+      "question": "A 9 V battery is applied across a 330 O resistor. Approximately how much current flows?",
+      "options": ["27 mA", "3.3 A", "297 mA"],
+      "correct_answer": "27 mA",
+      "explanation": "I = V / R = 9 / 330 ˜ 0.027 A = 27 mA."
+    },
+    {
+      "question_id": "q-ohm-02",
+      "type": "multiple_choice",
+      "question": "If you double the resistance while keeping voltage the same, what happens to current?",
+      "options": ["It doubles", "It halves", "It stays the same", "It becomes zero"],
+      "correct_answer": "It halves",
+      "explanation": "From I = V / R, if R doubles and V is constant, I becomes V / (2R) = I/2."
+    }
+  ],
+  "mini_challenge": "Using Ohm's Law, work out the resistor needed to limit an LED to 20 mA from a 5 V supply (assume a 2 V LED drop). Hint: the resistor sees 3 V.",
+  "extension_activity": "Research how temperature affects resistance in thermistors and how this is used in temperature sensors.",
+  "related_lessons": ["elec-series-parallel", "elec-led", "ard-analog"],
+  "further_reading": [
+    { "title": "Ohm's Law - Arduino Reference", "url": "https://docs.arduino.cc/learn" },
+    { "title": "CircuitDigest - Electronics Fundamentals", "url": "https://circuitdigest.com/tutorials" }
+  ],
+  "source_references": ["src-001", "src-003", "src-007"],
+  "technical_review_status": "draft",
+  "last_reviewed": "2026-10-19",
+  "assumptions": [
+    "Ideal components with no temperature dependence.",
+    "DC circuits only.",
+    "No parasitic resistance in wires."
+  ],
+  "intended_learning_outcome": "Learner can calculate voltage, current, or resistance using Ohm's Law and explain the inverse relationship between current and resistance."
+}

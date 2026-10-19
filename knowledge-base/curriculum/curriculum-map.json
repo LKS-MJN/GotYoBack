@@ -1,0 +1,92 @@
+{
+  "version": "1.0",
+  "platform": "GotYoBack",
+  "description": "Curriculum map for the GotYoBack interactive learning platform",
+  "domains": [
+    {
+      "id": "electronics",
+      "title": "Electronics Fundamentals",
+      "level": "beginner",
+      "lessons": [
+        { "id": "elec-ohm", "title": "Ohm's Law: Voltage, Current, Resistance", "difficulty": "beginner", "minutes": 8, "xp": 20 },
+        { "id": "elec-series-parallel", "title": "Series vs Parallel Circuits", "difficulty": "beginner", "minutes": 7, "xp": 20 },
+        { "id": "elec-led", "title": "LEDs and Current-Limiting Resistors", "difficulty": "beginner", "minutes": 6, "xp": 20 },
+        { "id": "elec-components", "title": "Resistors, Capacitors, and Diodes", "difficulty": "beginner", "minutes": 8, "xp": 20 },
+        { "id": "elec-power", "title": "Power, Energy, and Safety", "difficulty": "beginner", "minutes": 7, "xp": 20 }
+      ]
+    },
+    {
+      "id": "arduino",
+      "title": "Arduino and Embedded Programming",
+      "level": "beginner",
+      "lessons": [
+        { "id": "ard-intro", "title": "What Is a Microcontroller?", "difficulty": "beginner", "minutes": 7, "xp": 20 },
+        { "id": "ard-digital", "title": "Digital Input and Output", "difficulty": "beginner", "minutes": 9, "xp": 25 },
+        { "id": "ard-analog", "title": "Analog Input and PWM Output", "difficulty": "beginner", "minutes": 8, "xp": 25 },
+        { "id": "ard-serial", "title": "Serial Communication and Debugging", "difficulty": "beginner", "minutes": 8, "xp": 25 },
+        { "id": "ard-servo", "title": "Servo Motor Control", "difficulty": "intermediate", "minutes": 9, "xp": 25 },
+        { "id": "ard-motor", "title": "DC Motor Control with Motor Driver", "difficulty": "intermediate", "minutes": 10, "xp": 30 }
+      ]
+    },
+    {
+      "id": "esp32",
+      "title": "ESP32 and ESP8266",
+      "level": "intermediate",
+      "lessons": [
+        { "id": "esp-intro", "title": "ESP32 Architecture and GPIO", "difficulty": "intermediate", "minutes": 9, "xp": 25 },
+        { "id": "esp-wifi", "title": "Connect ESP32 to Wi-Fi and Serve a Page", "difficulty": "intermediate", "minutes": 12, "xp": 30 },
+        { "id": "esp-mqtt", "title": "MQTT and Device Communication", "difficulty": "advanced", "minutes": 11, "xp": 30 },
+        { "id": "esp-ble", "title": "Bluetooth and BLE Basics", "difficulty": "advanced", "minutes": 10, "xp": 30 }
+      ]
+    },
+    {
+      "id": "sensors",
+      "title": "Sensors and Actuators",
+      "level": "intermediate",
+      "lessons": [
+        { "id": "sen-ultrasonic", "title": "Ultrasonic Distance Sensor (HC-SR04)", "difficulty": "intermediate", "minutes": 10, "xp": 30 },
+        { "id": "sen-temp", "title": "Temperature and Humidity (DHT11)", "difficulty": "intermediate", "minutes": 7, "xp": 25 },
+        { "id": "sen-ir", "title": "IR Obstacle and Line Sensors", "difficulty": "intermediate", "minutes": 6, "xp": 25 },
+        { "id": "sen-light", "title": "Light Sensors (LDR)", "difficulty": "beginner", "minutes": 6, "xp": 20 },
+        { "id": "sen-motion", "title": "Motion Sensors (PIR)", "difficulty": "intermediate", "minutes": 7, "xp": 25 }
+      ]
+    },
+    {
+      "id": "robotics",
+      "title": "Robotics and Robot Control",
+      "level": "intermediate",
+      "lessons": [
+        { "id": "rob-drive", "title": "Robot Chassis and Drive Systems", "difficulty": "intermediate", "minutes": 8, "xp": 25 },
+        { "id": "rob-differential", "title": "Differential Drive and Turning", "difficulty": "intermediate", "minutes": 9, "xp": 25 },
+        { "id": "rob-obstacle", "title": "Obstacle-Avoidance Logic", "difficulty": "intermediate", "minutes": 11, "xp": 30 },
+        { "id": "rob-linefollow", "title": "Line-Following Logic", "difficulty": "intermediate", "minutes": 10, "xp": 30 },
+        { "id": "rob-closedloop", "title": "Closed-Loop Control Basics", "difficulty": "advanced", "minutes": 12, "xp": 35 }
+      ]
+    },
+    {
+      "id": "iot",
+      "title": "Internet of Things",
+      "level": "advanced",
+      "lessons": [
+        { "id": "iot-intro", "title": "What Is the Internet of Things?", "difficulty": "beginner", "minutes": 7, "xp": 20 },
+        { "id": "iot-mqtt", "title": "MQTT and Device Communication", "difficulty": "advanced", "minutes": 11, "xp": 30 },
+        { "id": "iot-dashboard", "title": "Sensor Dashboards and Monitoring", "difficulty": "intermediate", "minutes": 10, "xp": 25 },
+        { "id": "iot-security", "title": "IoT Security and Privacy", "difficulty": "advanced", "minutes": 9, "xp": 30 }
+      ]
+    },
+    {
+      "id": "projects",
+      "title": "Practical Projects",
+      "level": "advanced",
+      "lessons": [
+        { "id": "proj-night-lamp", "title": "Automatic Night Lamp", "difficulty": "beginner", "minutes": 15, "xp": 40 },
+        { "id": "proj-obstacle-robot", "title": "Obstacle-Avoiding Robot", "difficulty": "intermediate", "minutes": 25, "xp": 60 },
+        { "id": "proj-line-follower", "title": "Line-Following Robot", "difficulty": "intermediate", "minutes": 25, "xp": 60 },
+        { "id": "proj-esp-dashboard", "title": "ESP32 Sensor Dashboard", "difficulty": "advanced", "minutes": 30, "xp": 60 }
+      ]
+    }
+  ],
+  "pilot_lessons": ["elec-ohm", "elec-led", "ard-digital", "sen-ultrasonic", "rob-obstacle", "iot-intro"],
+  "total_lessons": 35,
+  "total_xp_available": 890
+}

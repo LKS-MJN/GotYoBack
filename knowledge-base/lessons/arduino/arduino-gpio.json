@@ -1,0 +1,118 @@
+{
+  "lesson_id": "kb-ard-gpio",
+  "title": "Digital Input and Output with Arduino",
+  "domain": "Arduino and Embedded Programming",
+  "topic": "GPIO (General Purpose Input/Output)",
+  "difficulty": "beginner",
+  "prerequisites": ["What Is a Microcontroller?", "Basic electronics (LED, resistor, button)"],
+  "learning_objectives": [
+    "Configure a pin as digital input or output using pinMode()",
+    "Turn an LED on and off using digitalWrite()",
+    "Read a button state using digitalRead()",
+    "Use INPUT_PULLUP to simplify button wiring",
+    "Write a program that responds to input in real time"
+  ],
+  "estimated_duration": 9,
+  "introduction": "Digital pins are the simplest form of communication between a microcontroller and the outside world. A digital output pin is either HIGH (5 V) or LOW (0 V). A digital input pin reads a switch or sensor as HIGH or LOW. This lesson teaches you to control an LED and read a button.",
+  "real_world_application": "Every embedded system uses digital I/O: turning on a motor, reading a limit switch, triggering an alarm, or detecting a door sensor. Mastering digital I/O is the foundation of all embedded programming.",
+  "core_concepts": [
+    { "term": "GPIO", "definition": "General Purpose Input/Output. Pins that can be configured as digital input or output." },
+    { "term": "HIGH / LOW", "definition": "Digital logic levels. HIGH is typically 5 V (or 3.3 V), LOW is 0 V." },
+    { "term": "pinMode()", "definition": "Configures a pin as INPUT, OUTPUT, or INPUT_PULLUP." },
+    { "term": "digitalWrite()", "definition": "Sets an output pin to HIGH or LOW." },
+    { "term": "digitalRead()", "definition": "Reads the state of an input pin (HIGH or LOW)." },
+    { "term": "INPUT_PULLUP", "definition": "Enables the internal pull-up resistor so a button to ground reads LOW when pressed." }
+  ],
+  "step_by_step_explanation": [
+    "1. Identify which pins you will use for output (LED) and input (button).",
+    "2. In setup(): call pinMode(ledPin, OUTPUT) and pinMode(buttonPin, INPUT_PULLUP).",
+    "3. In loop(): read the button with digitalRead(buttonPin).",
+    "4. If the button is pressed (LOW), turn the LED on with digitalWrite(ledPin, HIGH).",
+    "5. Otherwise, turn the LED off with digitalWrite(ledPin, LOW).",
+    "6. Upload the sketch and test."
+  ],
+  "important_formulas": [],
+  "components_required": ["Arduino Uno", "LED", "220 O resistor", "Push button", "Breadboard", "Jumper wires"],
+  "wiring_instructions": "Connect LED anode to pin 13 through a 220 O resistor. Connect LED cathode to GND. Connect one button terminal to pin 2. Connect the other button terminal to GND. The internal pull-up holds pin 2 HIGH; pressing the button pulls it LOW.",
+  "diagram_specification": "Arduino Uno with LED on pin 13 (through resistor to GND) and button on pin 2 (to GND). Internal pull-up enabled.",
+  "code_examples": [
+    {
+      "language": "cpp",
+      "code": "const int led = 13;\nconst int button = 2;\n\nvoid setup() {\n  pinMode(led, OUTPUT);\n  pinMode(button, INPUT_PULLUP);\n}\n\nvoid loop() {\n  if (digitalRead(button) == LOW) {\n    digitalWrite(led, HIGH);\n  } else {\n    digitalWrite(led, LOW);\n  }\n}",
+      "explanation": "The LED mirrors the button state. INPUT_PULLUP means a pressed button reads LOW."
+    }
+  ],
+  "line_by_line_code_explanation": [
+    "const int led = 13; — defines the LED pin number.",
+    "const int button = 2; — defines the button pin number.",
+    "pinMode(led, OUTPUT); — configures pin 13 as an output.",
+    "pinMode(button, INPUT_PULLUP); — configures pin 2 as input with internal pull-up.",
+    "digitalRead(button) == LOW — checks if button is pressed (pulled to ground).",
+    "digitalWrite(led, HIGH) — turns LED on.",
+    "digitalWrite(led, LOW) — turns LED off."
+  ],
+  "interactive_experiment": {
+    "experiment_id": "exp-digital-io",
+    "description": "Toggle a virtual button and observe the LED state change.",
+    "adjustable_inputs": ["button state (pressed / released)"],
+    "state_variables": ["LED on/off"],
+    "expected_behavior": "LED turns on when button is pressed, off when released."
+  },
+  "expected_observations": [
+    "LED is off when button is not pressed.",
+    "LED turns on immediately when button is pressed.",
+    "LED turns off immediately when button is released."
+  ],
+  "common_mistakes": [
+    "Forgetting pinMode() — pin may not work as expected.",
+    "Using INPUT instead of INPUT_PULLUP and forgetting external pull-up resistor.",
+    "Connecting button to VCC instead of GND with INPUT_PULLUP (reads always LOW).",
+    "Reversing LED polarity (LED does not light).",
+    "Using analog pins without understanding their digital capability."
+  ],
+  "troubleshooting_steps": [
+    "LED does not light: check polarity, check resistor, check pin number.",
+    "Button does not respond: check wiring, check pinMode, check for floating input.",
+    "LED always on: button may be wired to VCC instead of GND.",
+    "LED always off: check if button reads correctly with Serial Monitor."
+  ],
+  "safety_notes": [
+    "Always use a current-limiting resistor with an LED.",
+    "Do not connect a motor or high-current device directly to a GPIO pin.",
+    "Ensure the Arduino is powered via USB or a regulated supply."
+  ],
+  "knowledge_check": [
+    {
+      "question_id": "q-gpio-01",
+      "type": "multiple_choice",
+      "question": "With INPUT_PULLUP, what does a pressed button (to ground) usually read?",
+      "options": ["HIGH", "LOW", "Analog value"],
+      "correct_answer": "LOW",
+      "explanation": "The pull-up holds the pin HIGH; pressing to ground pulls it LOW."
+    },
+    {
+      "question_id": "q-gpio-02",
+      "type": "multiple_choice",
+      "question": "Which function configures a pin as an output?",
+      "options": ["digitalWrite()", "pinMode()", "digitalRead()", "analogWrite()"],
+      "correct_answer": "pinMode()",
+      "explanation": "pinMode(pin, OUTPUT) configures the pin. digitalWrite() sets its value."
+    }
+  ],
+  "mini_challenge": "Modify the code so the LED toggles (on/off) each time the button is pressed, instead of mirroring the button state.",
+  "extension_activity": "Add a second LED and button. Make one LED mirror the button and the other toggle.",
+  "related_lessons": ["ard-intro", "ard-analog", "elec-led"],
+  "further_reading": [
+    { "title": "Arduino - Digital I/O", "url": "https://docs.arduino.cc/learn" },
+    { "title": "Arduino Language Reference", "url": "https://docs.arduino.cc/language-reference/" }
+  ],
+  "source_references": ["src-003", "src-008"],
+  "technical_review_status": "draft",
+  "last_reviewed": "2026-10-19",
+  "assumptions": [
+    "Arduino Uno (5 V logic).",
+    "Button is momentary (not latching).",
+    "No debouncing needed for simple demonstration."
+  ],
+  "intended_learning_outcome": "Learner can configure digital pins, read a button, and control an LED in response to input."
+}

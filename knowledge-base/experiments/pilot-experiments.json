@@ -1,0 +1,119 @@
+{
+  "version": "1.0",
+  "experiments": [
+    {
+      "experiment_id": "exp-ohms-law",
+      "related_lesson_id": "kb-elec-ohm",
+      "learning_objective": "Observe how voltage and resistance affect current in a simple circuit.",
+      "components": ["Voltage source (simulated)", "Resistor (simulated)"],
+      "initial_state": { "voltage": 5, "resistance": 220 },
+      "adjustable_inputs": [
+        { "name": "voltage", "type": "slider", "min": 0, "max": 12, "unit": "V" },
+        { "name": "resistance", "type": "slider", "min": 10, "max": 1000, "unit": "O" }
+      ],
+      "state_variables": ["voltage", "resistance", "current"],
+      "rules": ["current = voltage / resistance"],
+      "output_behavior": "Display calculated current in mA. Highlight unsafe values (> 100 mA) in red.",
+      "event_log_messages": ["Voltage changed to {v} V", "Resistance changed to {r} O", "Current = {i} mA"],
+      "success_conditions": ["Learner observes inverse relationship between resistance and current"],
+      "failure_conditions": ["None (informational experiment)"],
+      "reset_behavior": "Reset voltage to 5 V, resistance to 220 O.",
+      "supported_actions": ["adjust_voltage", "adjust_resistance", "reset"],
+      "explanation_of_results": "Current is directly proportional to voltage and inversely proportional to resistance.",
+      "limitations_of_simulation": "Ideal components. No temperature effects. No wire resistance."
+    },
+    {
+      "experiment_id": "exp-led-circuit",
+      "related_lesson_id": "kb-elec-led",
+      "learning_objective": "Understand why a resistor is needed and how to size it for an LED.",
+      "components": ["Voltage source (simulated)", "Resistor (simulated)", "LED (simulated)"],
+      "initial_state": { "supply_voltage": 5, "resistance": 150, "led_forward_voltage": 2.0 },
+      "adjustable_inputs": [
+        { "name": "supply_voltage", "type": "slider", "min": 3, "max": 12, "unit": "V" },
+        { "name": "resistance", "type": "slider", "min": 100, "max": 1000, "unit": "O" },
+        { "name": "led_forward_voltage", "type": "slider", "min": 1.8, "max": 3.3, "unit": "V" }
+      ],
+      "state_variables": ["supply_voltage", "resistance", "led_forward_voltage", "led_current"],
+      "rules": ["led_current = (supply_voltage - led_forward_voltage) / resistance"],
+      "output_behavior": "Display LED current in mA. Flag values > 30 mA as unsafe (red). Show LED brightness indicator.",
+      "event_log_messages": ["Supply voltage changed to {v} V", "Resistance changed to {r} O", "LED current = {i} mA"],
+      "success_conditions": ["Learner identifies safe resistor value for given supply voltage"],
+      "failure_conditions": ["LED current exceeds 30 mA (simulated damage warning)"],
+      "reset_behavior": "Reset to 5 V supply, 150 O resistor, 2.0 V LED.",
+      "supported_actions": ["adjust_supply_voltage", "adjust_resistance", "adjust_led_voltage", "reset"],
+      "explanation_of_results": "The resistor limits current by dropping excess voltage. Without it, current is dangerously high.",
+      "limitations_of_simulation": "Ideal LED with constant forward voltage. No temperature effects."
+    },
+    {
+      "experiment_id": "exp-ultrasonic",
+      "related_lesson_id": "kb-sen-ultrasonic",
+      "learning_objective": "Observe how distance affects ultrasonic sensor readings.",
+      "components": ["HC-SR04 (simulated)", "Object (simulated)"],
+      "initial_state": { "object_distance": 30 },
+      "adjustable_inputs": [
+        { "name": "object_distance", "type": "slider", "min": 0, "max": 400, "unit": "cm" }
+      ],
+      "state_variables": ["object_distance", "measured_distance", "echo_time"],
+      "rules": ["measured_distance = object_distance (clamped to 2-400 cm)", "echo_time = measured_distance * 58"],
+      "output_behavior": "Display measured distance and echo time. Flag out-of-range values.",
+      "event_log_messages": ["Object distance: {d} cm", "Measured: {m} cm", "Echo time: {t} µs"],
+      "success_conditions": ["Learner observes distance changes in real time"],
+      "failure_conditions": ["Distance < 2 cm or > 400 cm (out of range)"],
+      "reset_behavior": "Reset object distance to 30 cm.",
+      "supported_actions": ["adjust_distance", "reset"],
+      "explanation_of_results": "The sensor measures round-trip time and converts to distance using speed of sound.",
+      "limitations_of_simulation": "Ideal reflection. No noise, temperature effects, or angular limitations."
+    },
+    {
+      "experiment_id": "exp-obstacle-avoidance",
+      "related_lesson_id": "kb-rob-obstacle",
+      "learning_objective": "Teach a robot to avoid obstacles using sensor input and conditional logic.",
+      "components": ["Robot (simulated)", "Maze (simulated)", "Ultrasonic sensor (simulated)"],
+      "initial_state": { "robot_position": [2, 2], "heading": "east", "threshold": 20 },
+      "adjustable_inputs": [
+        { "name": "threshold", "type": "slider", "min": 5, "max": 50, "unit": "cm" },
+        { "name": "maze_walls", "type": "grid_toggle", "description": "Click cells to toggle walls" },
+        { "name": "rule_action", "type": "select", "options": ["turn-right", "turn-left", "stop", "halt"] }
+      ],
+      "state_variables": ["robot_position", "heading", "distance_reading", "current_action", "step_count", "status"],
+      "rules": [
+        "IF distance < threshold THEN action (configurable)",
+        "ELSE move forward",
+        "IF collision THEN halt"
+      ],
+      "output_behavior": "Show robot position, heading, distance reading, current action, and event log. Highlight goal when reached.",
+      "event_log_messages": ["Step {n}: distance={d}cm, action={a}, {note}"],
+      "success_conditions": ["Robot reaches goal without collision"],
+      "failure_conditions": ["Collision with wall", "Step limit exceeded (400 steps)"],
+      "reset_behavior": "Reset robot to start position, clear log and path.",
+      "supported_actions": ["run", "pause", "step", "reset", "adjust_threshold", "toggle_walls", "change_rule"],
+      "explanation_of_results": "The robot uses sense-decide-act: read distance, compare to threshold, execute action.",
+      "limitations_of_simulation": "Single sensor. No motor physics. Deterministic environment."
+    },
+    {
+      "experiment_id": "exp-iot-dashboard",
+      "related_lesson_id": "kb-iot-esp32-basics",
+      "learning_objective": "Simulate sensor data flowing from an ESP32 to a dashboard.",
+      "components": ["ESP32 (simulated)", "DHT11 (simulated)", "Dashboard (simulated)"],
+      "initial_state": { "temperature": 24, "humidity": 50, "connection": "connected" },
+      "adjustable_inputs": [
+        { "name": "temperature", "type": "slider", "min": 10, "max": 45, "unit": "°C" },
+        { "name": "humidity", "type": "slider", "min": 20, "max": 90, "unit": "%" },
+        { "name": "fan_threshold", "type": "slider", "min": 20, "max": 40, "unit": "°C" }
+      ],
+      "state_variables": ["temperature", "humidity", "fan_state", "connection_state", "tick"],
+      "rules": [
+        "IF temperature > fan_threshold THEN fan ON",
+        "IF temperature <= fan_threshold THEN fan OFF"
+      ],
+      "output_behavior": "Display sensor values, device states, and event log. Show connection status.",
+      "event_log_messages": ["t{tick}: {sensor} {op} {threshold}: {device} turned {state}"],
+      "success_conditions": ["Learner observes automation rule triggering"],
+      "failure_conditions": ["None (informational experiment)"],
+      "reset_behavior": "Reset all sensors and devices to initial state.",
+      "supported_actions": ["run", "pause", "reset", "adjust_sensors", "adjust_thresholds", "toggle_rules"],
+      "explanation_of_results": "IoT automation: sensor input ? controller logic ? actuator output.",
+      "limitations_of_simulation": "No real network. Simulated sensor drift. No cloud integration."
+    }
+  ]
+}
