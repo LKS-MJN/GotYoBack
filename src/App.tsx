@@ -98,13 +98,13 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     <div className="flex min-h-screen flex-col">
       {/* Header */}
       <header className="sticky top-0 z-40 relative border-b border-border bg-background/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
-          <button onClick={() => go("home")} className="flex shrink-0 items-center gap-2 font-display text-lg font-bold tracking-tight" aria-label="GotYoBack home">
-            <span className="hidden sm:inline">GotYo<span className="text-primary">Back</span></span>
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+          <button onClick={() => go("home")} className="flex shrink-0 items-center gap-2 font-display text-base font-bold tracking-tight sm:text-xl" aria-label="GotYoBack home">
+            <span>GotYo<span className="text-primary">Back</span></span>
           </button>
 
           <nav aria-label="Main" className="hidden min-w-0 md:block">
-            <ul className="flex items-center gap-0.5 text-sm">
+            <ul className="flex items-center gap-1 text-sm">
               {NAV.map((item) => {
                 const active = view === item.id || (view === "lesson" && item.id === "learn")
                 return (
